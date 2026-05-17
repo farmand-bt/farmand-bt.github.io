@@ -1,0 +1,877 @@
+/* ============================================================
+   styles.css — Farmand Bazdiditehrani Portfolio
+   ============================================================
+
+   Table of contents
+   -----------------
+   1.  Design tokens (CSS custom properties)
+   2.  Reset & base
+   3.  Layout utilities
+   4.  Skip link
+   5.  Header & navigation
+   6.  Hero (#home)
+   7.  Section heading (shared)
+   8.  About (#about)
+   9.  Experience (#experience)
+   10. Education (#education)
+   11. Projects (#projects)
+   12. Skills (#skills)
+   13. Contact (#contact)
+   14. Footer
+   15. Buttons
+   16. Chips
+   17. Reveal animation
+   18. Responsive — ≤900px
+   19. Responsive — ≤540px
+   20. Reduced motion
+   ============================================================ */
+
+
+/* ============================================================
+   1. Design tokens
+   To change the accent colour, update --accent and --accent-hov
+   in :root (light) and [data-theme="dark"] (dark) below.
+   ============================================================ */
+:root {
+  /* Palette — light */
+  --bg:              #f8fafc;
+  --surface:         #ffffff;
+  --surface-alt:     #f1f5f9;
+  --ink:             #0f172a;
+  --ink-soft:        #64748b;
+  --rule:            #e2e8f0;
+  --accent:          #0d9488;   /* teal-600 */
+  --accent-hov:      #0f766e;   /* teal-700 */
+  --accent-soft:     #ccfbf1;   /* teal-100 */
+  --chip-bg:         #f0fdfa;   /* teal-50  */
+  --chip-ink:        #0f766e;
+  --badge-live-bg:   #dcfce7;
+  --badge-live-ink:  #166534;
+  --badge-prog-bg:   #fef9c3;
+  --badge-prog-ink:  #854d0e;
+
+  /* Spacing */
+  --sp-1:  0.25rem;
+  --sp-2:  0.5rem;
+  --sp-3:  0.75rem;
+  --sp-4:  1rem;
+  --sp-5:  1.25rem;
+  --sp-6:  1.5rem;
+  --sp-8:  2rem;
+  --sp-10: 2.5rem;
+  --sp-12: 3rem;
+  --sp-16: 4rem;
+  --sp-20: 5rem;
+
+  /* Layout */
+  --container:  880px;
+  --header-h:   60px;
+  --radius:     6px;
+  --radius-lg:  12px;
+
+  /* Typography */
+  --font: 'Inter', system-ui, -apple-system, sans-serif;
+
+  /* Transitions */
+  --dur:  250ms;
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Dark theme — only override what changes */
+[data-theme="dark"] {
+  --bg:             #0f172a;
+  --surface:        #1e293b;
+  --surface-alt:    #334155;
+  --ink:            #f1f5f9;
+  --ink-soft:       #94a3b8;
+  --rule:           #334155;
+  --accent:         #2dd4bf;   /* teal-400 */
+  --accent-hov:     #5eead4;
+  --accent-soft:    #134e4a;
+  --chip-bg:        #134e4a;
+  --chip-ink:       #5eead4;
+  --badge-live-bg:  #14532d;
+  --badge-live-ink: #86efac;
+  --badge-prog-bg:  #422006;
+  --badge-prog-ink: #fde047;
+}
+
+
+/* ============================================================
+   2. Reset & base
+   ============================================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  /* Offset anchored sections so they clear the sticky header */
+  scroll-padding-top: var(--header-h);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font);
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--ink);
+  background-color: var(--bg);
+  transition: background-color var(--dur) var(--ease),
+              color var(--dur) var(--ease);
+}
+
+img, picture, video, svg { display: block; max-width: 100%; }
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+  transition: color 150ms var(--ease);
+}
+a:hover { color: var(--accent-hov); text-decoration: underline; }
+
+ul, ol { list-style: none; }
+
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+/* Focus rings — visible only for keyboard navigation */
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: var(--radius);
+}
+
+
+/* ============================================================
+   3. Layout utilities
+   ============================================================ */
+.container {
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--sp-6);
+}
+
+/* Alternating section backgrounds for subtle rhythm */
+#home       { background-color: var(--bg); }
+#about      { background-color: var(--surface); }
+#experience { background-color: var(--bg); }
+#education  { background-color: var(--surface); }
+#projects   { background-color: var(--bg); }
+#skills     { background-color: var(--surface); }
+#contact    { background-color: var(--bg); }
+
+main section {
+  padding-block: var(--sp-20);
+}
+
+
+/* ============================================================
+   4. Skip link
+   ============================================================ */
+.skip-link {
+  position: fixed;
+  top: var(--sp-4);
+  left: var(--sp-4);
+  z-index: 200;
+  padding: var(--sp-2) var(--sp-5);
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.875rem;
+  transform: translateY(-200%);
+  transition: transform 150ms var(--ease);
+}
+.skip-link:focus { transform: translateY(0); }
+
+
+/* ============================================================
+   5. Header & navigation
+   ============================================================ */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: var(--header-h);
+  background-color: var(--surface);
+  border-bottom: 1px solid var(--rule);
+  transition: background-color var(--dur) var(--ease),
+              border-color var(--dur) var(--ease);
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  gap: var(--sp-4);
+}
+
+/* Brand / initials */
+.brand {
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+  text-decoration: none;
+  flex-shrink: 0;
+}
+.brand:hover { color: var(--accent-hov); text-decoration: none; }
+
+/* Section links */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1);
+  flex: 1;
+  justify-content: flex-end;
+}
+.nav-links li { display: contents; }
+
+.nav-links a {
+  display: inline-block;
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--radius);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--ink-soft);
+  white-space: nowrap;
+  text-decoration: none;
+  transition: color 150ms var(--ease),
+              background-color 150ms var(--ease);
+}
+.nav-links a:hover {
+  color: var(--ink);
+  background-color: var(--surface-alt);
+  text-decoration: none;
+}
+
+/* Active section — set by scroll-spy in script.js */
+.nav-links a[aria-current="page"] {
+  color: var(--accent);
+  background-color: var(--accent-soft);
+}
+
+/* Theme toggle button */
+#theme-toggle {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius);
+  font-size: 1.05rem;
+  color: var(--ink-soft);
+  border: 1px solid var(--rule);
+  transition: background-color 150ms var(--ease),
+              color 150ms var(--ease);
+}
+#theme-toggle:hover {
+  background-color: var(--surface-alt);
+  color: var(--ink);
+}
+
+
+/* ============================================================
+   6. Hero (#home)
+   ============================================================ */
+#home {
+  min-height: calc(100vh - var(--header-h));
+  display: flex;
+  align-items: center;
+}
+
+.home-inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  padding-block: var(--sp-16);
+}
+
+.home-greeting {
+  font-size: 1.125rem;
+  color: var(--ink-soft);
+}
+
+.home-name {
+  font-size: clamp(2.25rem, 6vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.home-role {
+  font-size: clamp(1.125rem, 2.5vw, 1.5rem);
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.home-location {
+  font-size: 0.9375rem;
+  color: var(--ink-soft);
+}
+
+.home-tagline {
+  max-width: 540px;
+  font-size: 1.0625rem;
+  color: var(--ink-soft);
+  line-height: 1.75;
+  margin-top: var(--sp-2);
+}
+
+.home-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+  margin-top: var(--sp-3);
+}
+
+
+/* ============================================================
+   7. Section heading (shared)
+   ============================================================ */
+.section-heading {
+  display: inline-block;
+  font-size: clamp(1.5rem, 3vw, 1.875rem);
+  font-weight: 700;
+  color: var(--ink);
+  padding-bottom: var(--sp-3);
+  border-bottom: 2px solid var(--accent);
+  margin-bottom: var(--sp-10);
+}
+
+
+/* ============================================================
+   8. About (#about)
+   ============================================================ */
+.about-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-5);
+  max-width: 680px;
+}
+.about-body p {
+  font-size: 1.0625rem;
+  line-height: 1.8;
+  color: var(--ink-soft);
+}
+/* First paragraph gets slightly more emphasis */
+.about-body p:first-child { color: var(--ink); }
+
+
+/* ============================================================
+   9. Experience (#experience)
+   Cards are on --bg, so they use --surface to stand out.
+   ============================================================ */
+.job-card {
+  background-color: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-lg);
+  padding: var(--sp-6);
+  margin-bottom: var(--sp-5);
+  transition: border-color var(--dur) var(--ease),
+              box-shadow var(--dur) var(--ease);
+}
+.job-card:last-child { margin-bottom: 0; }
+.job-card:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.job-header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--sp-4) var(--sp-6);
+  align-items: start;
+  margin-bottom: var(--sp-4);
+}
+
+.job-title {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: var(--sp-1);
+}
+.job-company {
+  font-size: 0.875rem;
+  color: var(--ink-soft);
+}
+.job-company a { color: var(--ink-soft); }
+.job-company a:hover { color: var(--accent); text-decoration: none; }
+
+.job-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--sp-1);
+}
+.job-date,
+.job-location {
+  font-size: 0.8125rem;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+
+.job-desc {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+.job-desc li {
+  position: relative;
+  padding-left: var(--sp-5);
+  font-size: 0.9375rem;
+  color: var(--ink-soft);
+  line-height: 1.65;
+}
+.job-desc li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+
+/* ============================================================
+   10. Education (#education)
+   Cards are on --surface, so they use --bg to stand out.
+   ============================================================ */
+.edu-card {
+  background-color: var(--bg);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-lg);
+  padding: var(--sp-6);
+  margin-bottom: var(--sp-5);
+  transition: border-color var(--dur) var(--ease),
+              box-shadow var(--dur) var(--ease);
+}
+.edu-card:last-child { margin-bottom: 0; }
+.edu-card:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.edu-header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--sp-4) var(--sp-6);
+  align-items: start;
+  margin-bottom: var(--sp-3);
+}
+
+.edu-degree {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: var(--sp-1);
+}
+.edu-institution {
+  font-size: 0.875rem;
+  color: var(--ink-soft);
+}
+.edu-institution a { color: var(--ink-soft); }
+.edu-institution a:hover { color: var(--accent); text-decoration: none; }
+
+.edu-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--sp-1);
+}
+.edu-date {
+  font-size: 0.8125rem;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+.edu-gpa {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+.edu-courses {
+  font-size: 0.875rem;
+  color: var(--ink-soft);
+  line-height: 1.65;
+}
+.edu-thesis { margin-top: var(--sp-2); }
+.label {
+  font-weight: 600;
+  color: var(--ink);
+  margin-right: var(--sp-1);
+}
+
+
+/* ============================================================
+   11. Projects (#projects)
+   Cards are on --bg, so they use --surface.
+   ============================================================ */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--sp-6);
+}
+
+.project-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  background-color: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-lg);
+  padding: var(--sp-6);
+  transition: border-color var(--dur) var(--ease),
+              box-shadow var(--dur) var(--ease),
+              transform var(--dur) var(--ease);
+}
+.project-card:hover {
+  border-color: var(--accent);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+.project-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--sp-3);
+}
+
+.project-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.35;
+}
+
+.status-badge {
+  flex-shrink: 0;
+  padding: 2px 10px;
+  border-radius: 99px;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.status-live     { background: var(--badge-live-bg);  color: var(--badge-live-ink); }
+.status-progress { background: var(--badge-prog-bg);  color: var(--badge-prog-ink); }
+
+.project-desc {
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  line-height: 1.7;
+  flex-grow: 1;
+}
+
+.project-tags { margin-top: auto; }
+
+.project-links {
+  display: flex;
+  gap: var(--sp-3);
+}
+
+
+/* ============================================================
+   12. Skills (#skills)
+   ============================================================ */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--sp-10) var(--sp-12);
+}
+
+.skill-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.skill-group-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink-soft);
+}
+
+
+/* ============================================================
+   13. Contact (#contact)
+   ============================================================ */
+.contact-intro {
+  max-width: 540px;
+  font-size: 1.0625rem;
+  color: var(--ink-soft);
+  line-height: 1.75;
+  margin-bottom: var(--sp-8);
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-10);
+}
+
+.contact-link {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-4);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-lg);
+  background-color: var(--surface);
+  text-decoration: none;
+  transition: border-color 150ms var(--ease),
+              background-color 150ms var(--ease);
+}
+.contact-link:hover {
+  border-color: var(--accent);
+  background-color: var(--accent-soft);
+  text-decoration: none;
+}
+
+.contact-icon {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius);
+  background-color: var(--accent-soft);
+  color: var(--accent);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.contact-label {
+  font-size: 0.875rem;
+  color: var(--ink);
+  word-break: break-all;
+}
+
+.contact-cv {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-5);
+  flex-wrap: wrap;
+}
+.cv-note {
+  font-size: 0.8125rem;
+  color: var(--ink-soft);
+  font-style: italic;
+}
+.cv-note code {
+  font-family: ui-monospace, 'Cascadia Code', monospace;
+  background: var(--surface-alt);
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-style: normal;
+  font-size: 0.8em;
+}
+
+
+/* ============================================================
+   14. Footer
+   ============================================================ */
+.site-footer {
+  padding-block: var(--sp-8);
+  border-top: 1px solid var(--rule);
+  background-color: var(--surface);
+  transition: background-color var(--dur) var(--ease);
+}
+.footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.875rem;
+  color: var(--ink-soft);
+}
+.footer-back {
+  font-weight: 500;
+  color: var(--ink-soft);
+  text-decoration: none;
+}
+.footer-back:hover { color: var(--accent); text-decoration: none; }
+
+
+/* ============================================================
+   15. Buttons
+   ============================================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5625rem var(--sp-5);
+  border-radius: var(--radius);
+  border: 1px solid var(--accent);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #fff;
+  background-color: var(--accent);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 150ms var(--ease),
+              border-color 150ms var(--ease),
+              box-shadow 150ms var(--ease),
+              color 150ms var(--ease);
+}
+.btn:hover {
+  background-color: var(--accent-hov);
+  border-color: var(--accent-hov);
+  color: #fff;
+  text-decoration: none;
+  box-shadow: 0 2px 10px rgba(13, 148, 136, 0.28);
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: var(--accent);
+}
+.btn-outline:hover {
+  background-color: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--accent-hov);
+  box-shadow: none;
+}
+
+.btn-sm {
+  padding: var(--sp-2) var(--sp-4);
+  font-size: 0.8125rem;
+}
+
+
+/* ============================================================
+   16. Chips (skill tags, project technology tags)
+   ============================================================ */
+.chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+
+.chip {
+  display: inline-block;
+  padding: var(--sp-1) var(--sp-3);
+  border-radius: 99px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  background-color: var(--chip-bg);
+  color: var(--chip-ink);
+  border: 1px solid transparent;
+  transition: border-color 150ms var(--ease);
+}
+.chip:hover { border-color: var(--accent); }
+
+
+/* ============================================================
+   17. Reveal animation (fade + slide up on scroll)
+   class added by IntersectionObserver in script.js
+   ============================================================ */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 420ms var(--ease),
+              transform 420ms var(--ease);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+/* ============================================================
+   18. Responsive — ≤900px (tablet)
+   ============================================================ */
+@media (max-width: 900px) {
+  /* Job and edu cards: stack date/location below title */
+  .job-header,
+  .edu-header {
+    grid-template-columns: 1fr;
+  }
+  .job-meta,
+  .edu-meta {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--sp-4);
+  }
+
+  /* Projects: single column */
+  .projects-grid { grid-template-columns: 1fr; }
+
+  /* Contact: single column */
+  .contact-grid { grid-template-columns: 1fr; }
+}
+
+
+/* ============================================================
+   19. Responsive — ≤540px (mobile)
+   ============================================================ */
+@media (max-width: 540px) {
+  /* Taller effective header because nav links wrap to a second row */
+  :root { --header-h: 96px; }
+  html  { scroll-padding-top: 96px; }
+
+  .site-header { height: auto; min-height: 60px; }
+
+  /* Allow nav to wrap: brand + toggle on top row, links on second row */
+  .nav {
+    flex-wrap: wrap;
+    align-items: center;
+    padding-block: var(--sp-2);
+    gap: var(--sp-2);
+    height: auto;
+  }
+
+  /* Push nav-links to full width on a second row */
+  .nav-links {
+    order: 3;
+    flex: 0 0 100%;
+    justify-content: flex-start;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: var(--sp-1);
+  }
+  .nav-links::-webkit-scrollbar { display: none; }
+
+  /* Tighten section padding */
+  main section { padding-block: var(--sp-12); }
+
+  /* Skills: single column */
+  .skills-grid { grid-template-columns: 1fr; }
+
+  /* Footer: stack */
+  .footer-inner {
+    flex-direction: column;
+    gap: var(--sp-2);
+    text-align: center;
+  }
+}
+
+
+/* ============================================================
+   20. Reduced motion — honour the user's OS preference
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  /* Make all reveal elements immediately visible */
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
