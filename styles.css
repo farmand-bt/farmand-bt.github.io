@@ -635,6 +635,8 @@ main section:last-of-type { border-bottom: none; }
 }
 .status-live     { background: var(--badge-live-bg);  color: var(--badge-live-ink); }
 .status-progress { background: var(--badge-prog-bg);  color: var(--badge-prog-ink); }
+.status-research { background: var(--accent-soft);    color: var(--accent-hov); }
+[data-theme="dark"] .status-research { color: var(--accent); }
 
 .project-desc {
   font-size: 0.9375rem;
@@ -837,7 +839,9 @@ main section:last-of-type { border-bottom: none; }
 }
 
 .chip {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
   padding: var(--sp-1) var(--sp-3);
   border-radius: 99px;
   font-size: 0.8125rem;
@@ -848,6 +852,13 @@ main section:last-of-type { border-bottom: none; }
   transition: border-color 150ms var(--ease);
 }
 .chip:hover { border-color: var(--accent); }
+
+/* Tool logo inside a chip — hidden entirely if the CDN request fails */
+.chip-icon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
 
 
 /* ============================================================
