@@ -40,7 +40,7 @@
     <nav class="nav container" aria-label="Primary navigation">
 
       <!-- Brand monogram — links back to top of page -->
-      <a class="brand" href="#home" aria-label="Farmand Bazdiditehrani — go to top">F<span class="brand-dot">.</span></a>
+      <a class="brand" href="#home" aria-label="Farmand Bazdiditehrani — go to top">FB<span class="brand-dot">.</span></a>
 
       <!-- Section links — one per section below -->
       <ul class="nav-links" role="list">
@@ -143,7 +143,7 @@
               <span class="timeline-date">Sep 2025 — Present</span>
               <span class="timeline-place">Hamburg, Germany</span>
             </p>
-            <h3 class="timeline-title">Working Student, Data Analytics &amp; AI</h3>
+            <h3 class="timeline-title">Working Student, Data, Analytics &amp; AI</h3>
             <p class="timeline-org">
               <a href="https://www.pmi-advisory.com" target="_blank" rel="noopener">PMI Advisory GmbH</a>
             </p>
@@ -217,7 +217,7 @@
             <span class="timeline-marker" aria-hidden="true"></span>
             <p class="timeline-meta">
               <span class="timeline-date">2019 — 2023</span>
-              <span class="timeline-badge">GPA 18.76 / 20 · Ranked 6<sup>th</sup> of 75</span>
+              <span class="timeline-badge">GPA 18.76 / 20 (German: 1.4) · Ranked 6<sup>th</sup> of 75</span>
             </p>
             <h3 class="timeline-title">B.Sc. Industrial Engineering</h3>
             <p class="timeline-org">Iran University of Science and Technology (IUST)</p>
@@ -269,17 +269,15 @@
               <li><span class="chip">Streamlit</span></li>
             </ul>
             <div class="project-links">
-              <!-- TODO: replace with your actual GitHub repo URL -->
-              <a class="btn btn-sm" href="https://github.com/farmand-bt" target="_blank" rel="noopener">GitHub</a>
-              <!-- TODO: replace # with your Streamlit app URL -->
-              <a class="btn btn-sm btn-outline" href="#" target="_blank" rel="noopener">Live Demo</a>
+              <a class="btn btn-sm" href="https://github.com/farmand-bt/multi-source-conversational-rag" target="_blank" rel="noopener">GitHub</a>
+              <a class="btn btn-sm btn-outline" href="https://multi-source-conversational-rag.streamlit.app/" target="_blank" rel="noopener">Live Demo</a>
             </div>
           </article>
 
           <article class="project-card reveal">
             <div class="project-header">
               <h3 class="project-title">LLM Data Quality Analyzer</h3>
-              <span class="status-badge status-progress">In Progress</span>
+              <span class="status-badge status-live">Live</span>
             </div>
             <p class="project-desc">
               A tool that uses large language models to automatically detect data quality issues —
@@ -294,8 +292,59 @@
               <li><span class="chip">Pydantic</span></li>
             </ul>
             <div class="project-links">
-              <!-- TODO: replace with your actual GitHub repo URL -->
-              <a class="btn btn-sm" href="https://github.com/farmand-bt" target="_blank" rel="noopener">GitHub</a>
+              <a class="btn btn-sm" href="https://github.com/farmand-bt/llm-data-quality-analyzer" target="_blank" rel="noopener">GitHub</a>
+              <a class="btn btn-sm btn-outline" href="https://llm-data-quality-analyzer.streamlit.app/" target="_blank" rel="noopener">Live Demo</a>
+            </div>
+          </article>
+
+          <article class="project-card reveal">
+            <div class="project-header">
+              <h3 class="project-title">Knowledge Graph Question Answering (KGQA)</h3>
+              <span class="status-badge status-live">Live</span>
+            </div>
+            <p class="project-desc">
+              A hybrid NLP pipeline that answers natural-language questions over the DBpedia
+              knowledge graph — chaining entity linking (DBpedia Spotlight), 1-hop relation
+              filtering, LLM-based SPARQL generation (Llama 3.3 70B), and live query execution
+              with automatic retry on failed or empty results. Achieved 30% strict / 32% lenient
+              accuracy on 50 LC-QuAD benchmark questions. Course project for Advanced Machine
+              Learning (WS 2025/26) at Leuphana University.
+            </p>
+            <ul class="chip-list project-tags" aria-label="Technologies used">
+              <li><span class="chip">Python</span></li>
+              <li><span class="chip">spaCy</span></li>
+              <li><span class="chip">SPARQL</span></li>
+              <li><span class="chip">DBpedia</span></li>
+              <li><span class="chip">Llama 3.3</span></li>
+              <li><span class="chip">Streamlit</span></li>
+            </ul>
+            <div class="project-links">
+              <a class="btn btn-sm" href="https://github.com/farmand-bt/KGQA_AML" target="_blank" rel="noopener">GitHub</a>
+              <a class="btn btn-sm btn-outline" href="https://knowledge-graph-question-answering-farmand-bazdiditehrani.streamlit.app/" target="_blank" rel="noopener">Live Demo</a>
+            </div>
+          </article>
+
+          <article class="project-card reveal">
+            <div class="project-header">
+              <h3 class="project-title">Bayesian Football Result Prediction</h3>
+              <span class="status-badge status-research">Research</span>
+            </div>
+            <p class="project-desc">
+              Replication and extension of Baio &amp; Blangiardo (2010): Bayesian hierarchical
+              models for predicting football results, fitted with MCMC (NUTS) on Italian Serie A
+              data. Extends the paper with team-specific home advantage and a covariate model
+              decomposing home advantage into stadium quality, travel distance, and fatigue.
+              Course project for Probabilistic Modelling at Leuphana University.
+            </p>
+            <ul class="chip-list project-tags" aria-label="Technologies used">
+              <li><span class="chip">Python</span></li>
+              <li><span class="chip">PyMC</span></li>
+              <li><span class="chip">ArviZ</span></li>
+              <li><span class="chip">MCMC</span></li>
+              <li><span class="chip">Jupyter</span></li>
+            </ul>
+            <div class="project-links">
+              <a class="btn btn-sm" href="https://github.com/farmand-bt/bayesian-football-prediction" target="_blank" rel="noopener">GitHub</a>
             </div>
           </article>
 
@@ -313,14 +362,21 @@
           <h2 id="skills-heading" class="section-heading">Skills</h2>
         </div>
 
+        <!--
+          Tool logos come from cdn.simpleicons.org, tinted a single violet
+          (8464d8) so they read as one set in both themes. Tools without an
+          icon there (MATLAB, OpenAI, Power BI, Azure, Excel, dbt, …) render
+          as plain text chips. To add an icon: copy an <img class="chip-icon">
+          line and swap the slug in the URL.
+        -->
         <div class="skills-grid">
 
           <div class="skill-group reveal">
-            <h3 class="skill-group-label">Languages</h3>
+            <h3 class="skill-group-label">Programming Languages</h3>
             <ul class="chip-list" role="list" aria-label="Programming languages">
-              <li><span class="chip">Python</span></li>
+              <li><span class="chip"><img class="chip-icon" src="https://cdn.simpleicons.org/python/8464d8" alt="" loading="lazy" width="14" height="14" />Python</span></li>
               <li><span class="chip">SQL</span></li>
-              <li><span class="chip">R</span></li>
+              <li><span class="chip"><img class="chip-icon" src="https://cdn.simpleicons.org/r/8464d8" alt="" loading="lazy" width="14" height="14" />R</span></li>
               <li><span class="chip">MATLAB</span></li>
             </ul>
           </div>
@@ -328,19 +384,19 @@
           <div class="skill-group reveal">
             <h3 class="skill-group-label">ML &amp; Analysis</h3>
             <ul class="chip-list" role="list" aria-label="Machine learning and data analysis">
-              <li><span class="chip">pandas</span></li>
-              <li><span class="chip">Polars</span></li>
-              <li><span class="chip">NumPy</span></li>
-              <li><span class="chip">scikit-learn</span></li>
-              <li><span class="chip">TensorFlow</span></li>
-              <li><span class="chip">PyTorch</span></li>
+              <li><span class="chip"><img class="chip-icon" src="https://cdn.simpleicons.org/pandas/8464d8" alt="" loading="lazy" width="14" height="14" />pandas</span></li>
+              <li><span class="chip"><img class="chip-icon" src="https://cdn.simpleicons.org/polars/8464d8" alt="" loading="lazy" width="14" height="14" />Polars</span></li>
+              <li><span class="chip"><img class="chip-icon" src="https://cdn.simpleicons.org/numpy/8464d8" alt="" loading="lazy" width="14" height="14" />NumPy</span></li>
+              <li><span class="chip"><img class="chip-icon" src="https://cdn.simpleicons.org/scikitlearn/8464d8" alt="" loading="lazy" width="14" height="14" />scikit-learn</span></li>
+              <li><span class="chip"><img class="chip-icon" src="https://cdn.simpleicons.org/tensorflow/8464d8" alt="" loading="lazy" width="14" height="14" />TensorFlow</span></li>
+              <li><span class="chip"><img class="chip-icon" src="https://cdn.simpleicons.org/pytorch/8464d8" alt="" loading="lazy" width="14" height="14" />PyTorch</span></li>
             </ul>
           </div>
 
           <div class="skill-group reveal">
             <h3 class="skill-group-label">AI &amp; LLMs</h3>
             <ul class="chip-list" role="list" aria-label="AI and large language model tools">
-              <li><span class="chip">LangChain</span></li>
+              <li><span class="chip"><img class="chip-icon" src="https://cdn.simpleicons.org/langchain/8464d8" alt="" loading="lazy" width="14" height="14" />LangChain</span></li>
               <li><span class="chip">RAG</span></li>
               <li><span class="chip">LLMs</span></li>
               <li><span class="chip">OpenAI API</span></li>
@@ -352,10 +408,10 @@
             <h3 class="skill-group-label">BI &amp; Visualisation</h3>
             <ul class="chip-list" role="list" aria-label="Business intelligence and visualisation">
               <li><span class="chip">Power BI</span></li>
-              <li><span class="chip">Superset</span></li>
+              <li><span class="chip"><img class="chip-icon" src="https://cdn.simpleicons.org/apachesuperset/8464d8" alt="" loading="lazy" width="14" height="14" />Superset</span></li>
               <li><span class="chip">Matplotlib</span></li>
               <li><span class="chip">Seaborn</span></li>
-              <li><span class="chip">Plotly</span></li>
+              <li><span class="chip"><img class="chip-icon" src="https://cdn.simpleicons.org/plotly/8464d8" alt="" loading="lazy" width="14" height="14" />Plotly</span></li>
               <li><span class="chip">Excel</span></li>
             </ul>
           </div>
@@ -363,9 +419,9 @@
           <div class="skill-group reveal">
             <h3 class="skill-group-label">Databases &amp; Pipelines</h3>
             <ul class="chip-list" role="list" aria-label="Databases and data pipeline tools">
-              <li><span class="chip">PostgreSQL</span></li>
+              <li><span class="chip"><img class="chip-icon" src="https://cdn.simpleicons.org/postgresql/8464d8" alt="" loading="lazy" width="14" height="14" />PostgreSQL</span></li>
               <li><span class="chip">SQL Server</span></li>
-              <li><span class="chip">DuckDB</span></li>
+              <li><span class="chip"><img class="chip-icon" src="https://cdn.simpleicons.org/duckdb/8464d8" alt="" loading="lazy" width="14" height="14" />DuckDB</span></li>
               <li><span class="chip">dbt</span></li>
               <li><span class="chip">Dagster</span></li>
             </ul>
@@ -375,10 +431,10 @@
             <h3 class="skill-group-label">Cloud &amp; Tools</h3>
             <ul class="chip-list" role="list" aria-label="Cloud platforms and developer tools">
               <li><span class="chip">Azure</span></li>
-              <li><span class="chip">Docker</span></li>
-              <li><span class="chip">Git</span></li>
-              <li><span class="chip">Streamlit</span></li>
-              <li><span class="chip">Jupyter</span></li>
+              <li><span class="chip"><img class="chip-icon" src="https://cdn.simpleicons.org/docker/8464d8" alt="" loading="lazy" width="14" height="14" />Docker</span></li>
+              <li><span class="chip"><img class="chip-icon" src="https://cdn.simpleicons.org/git/8464d8" alt="" loading="lazy" width="14" height="14" />Git</span></li>
+              <li><span class="chip"><img class="chip-icon" src="https://cdn.simpleicons.org/streamlit/8464d8" alt="" loading="lazy" width="14" height="14" />Streamlit</span></li>
+              <li><span class="chip"><img class="chip-icon" src="https://cdn.simpleicons.org/jupyter/8464d8" alt="" loading="lazy" width="14" height="14" />Jupyter</span></li>
               <li><span class="chip">Marimo</span></li>
             </ul>
           </div>
@@ -440,7 +496,7 @@
 
   <footer class="site-footer">
     <div class="container footer-inner">
-      <span class="footer-mark" aria-hidden="true">F<span class="brand-dot">.</span></span>
+      <span class="footer-mark" aria-hidden="true">FB<span class="brand-dot">.</span></span>
       <p>© 2026 Farmand Bazdiditehrani</p>
       <a href="#home" class="footer-back">Back to top ↑</a>
     </div>
