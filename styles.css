@@ -609,6 +609,15 @@ main section:last-of-type { border-bottom: none; }
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
 }
 
+.project-date {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  margin-bottom: calc(-1 * var(--sp-2));
+}
+
 .project-header {
   display: flex;
   align-items: flex-start;
