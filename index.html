@@ -5,18 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <title>Farmand Bazdiditehrani — Data Science &amp; AI</title>
-  <meta name="description" content="Farmand Bazdiditehrani — Data Scientist and AI engineer based in Lüneburg, Germany. M.Sc. student at Leuphana University, working student at PMI Advisory GmbH." />
+  <meta name="description" content="Farmand Bazdiditehrani — M.Sc. Management &amp; Data Science student and Data, Analytics &amp; AI working student based in Lüneburg, Germany." />
 
   <!-- OpenGraph -->
   <meta property="og:type"        content="website" />
   <meta property="og:title"       content="Farmand Bazdiditehrani — Data Science &amp; AI" />
-  <meta property="og:description" content="Data Scientist and AI engineer based in Lüneburg, Germany." />
+  <meta property="og:description" content="M.Sc. Management &amp; Data Science student and Data, Analytics &amp; AI working student based in Lüneburg, Germany." />
   <meta property="og:url"         content="https://farmand-bt.github.io" />
 
   <!-- Twitter Card -->
   <meta name="twitter:card"        content="summary" />
   <meta name="twitter:title"       content="Farmand Bazdiditehrani — Data Science &amp; AI" />
-  <meta name="twitter:description" content="Data Scientist and AI engineer based in Lüneburg, Germany." />
+  <meta name="twitter:description" content="M.Sc. Management &amp; Data Science student and Data, Analytics &amp; AI working student based in Lüneburg, Germany." />
 
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
@@ -71,11 +71,13 @@
       </div>
 
       <div class="container home-inner">
-        <p class="home-kicker">Data Scientist &amp; AI Engineer · Lüneburg, Germany</p>
+        <p class="home-kicker">Data, Analytics &amp; AI · Lüneburg, Germany</p>
         <h1 class="home-name">Farmand<br /><em>Bazdiditehrani</em></h1>
         <p class="home-tagline">
+          M.Sc. Management &amp; Data Science student at Leuphana University.
           I build intelligent data products — from BI dashboards and ETL pipelines
-          to LLM-powered applications and conversational AI systems.
+          to LLM-powered applications and conversational AI systems — working toward
+          data science, data engineering, and AI engineering roles.
         </p>
         <div class="home-links">
           <a class="btn" href="https://github.com/farmand-bt" target="_blank" rel="noopener">GitHub</a>
@@ -232,6 +234,49 @@
           </li>
 
         </ol>
+
+        <!-- Certifications — each row links to its verification page -->
+        <div class="certs reveal">
+          <h3 class="certs-label">Certifications</h3>
+          <ul class="cert-list" role="list">
+            <li>
+              <a class="cert-link" href="https://www.credly.com/badges/ea69f37f-a0e5-44bc-9660-aa54f44959f5" target="_blank" rel="noopener">
+                <span class="cert-name">Claude Certified Architect</span>
+                <span class="cert-meta">Anthropic · Jun 2026 – Jun 2027</span>
+              </a>
+            </li>
+            <li>
+              <a class="cert-link" href="https://task.sulitest.org/certificate.html?t=3912729512" target="_blank" rel="noopener">
+                <span class="cert-name">TASK — The Assessment for Sustainability Knowledge</span>
+                <span class="cert-meta">Sulitest · May 2026 – May 2031</span>
+              </a>
+            </li>
+            <li>
+              <a class="cert-link" href="https://verify.skilljar.com/c/schvrwv8tk4a" target="_blank" rel="noopener">
+                <span class="cert-name">Claude Code in Action</span>
+                <span class="cert-meta">Anthropic · Apr 2026</span>
+              </a>
+            </li>
+            <li>
+              <a class="cert-link" href="https://verify.skilljar.com/c/i998vki9ut23" target="_blank" rel="noopener">
+                <span class="cert-name">Building with the Claude API</span>
+                <span class="cert-meta">Anthropic · Apr 2026</span>
+              </a>
+            </li>
+            <li>
+              <a class="cert-link" href="https://verify.skilljar.com/c/728nkosgwysi" target="_blank" rel="noopener">
+                <span class="cert-name">Introduction to Model Context Protocol</span>
+                <span class="cert-meta">Anthropic · Apr 2026</span>
+              </a>
+            </li>
+            <li>
+              <a class="cert-link" href="https://verify.skilljar.com/c/3e9rzgj7jd5c" target="_blank" rel="noopener">
+                <span class="cert-name">Introduction to Agent Skills</span>
+                <span class="cert-meta">Anthropic · Apr 2026</span>
+              </a>
+            </li>
+          </ul>
+        </div>
       </div>
     </section>
 
@@ -250,6 +295,31 @@
         <div class="projects-grid">
 
           <article class="project-card reveal">
+            <p class="project-date">May 2026</p>
+            <div class="project-header">
+              <h3 class="project-title">LLM Data Quality Analyzer</h3>
+              <span class="status-badge status-live">Live</span>
+            </div>
+            <p class="project-desc">
+              A tool that uses large language models to automatically detect data quality issues —
+              schema inconsistencies, anomalies, missing value patterns, and semantic errors —
+              in structured datasets, generating human-readable diagnostics and remediation suggestions.
+            </p>
+            <ul class="chip-list project-tags" aria-label="Technologies used">
+              <li><span class="chip">Python</span></li>
+              <li><span class="chip">LLMs</span></li>
+              <li><span class="chip">pandas</span></li>
+              <li><span class="chip">OpenAI</span></li>
+              <li><span class="chip">Pydantic</span></li>
+            </ul>
+            <div class="project-links">
+              <a class="btn btn-sm" href="https://github.com/farmand-bt/llm-data-quality-analyzer" target="_blank" rel="noopener">GitHub</a>
+              <a class="btn btn-sm btn-outline" href="https://llm-data-quality-analyzer.streamlit.app/" target="_blank" rel="noopener">Live Demo</a>
+            </div>
+          </article>
+
+          <article class="project-card reveal">
+            <p class="project-date">April 2026</p>
             <div class="project-header">
               <h3 class="project-title">Multi-Source Conversational RAG Assistant</h3>
               <!-- Change class to status-progress if no longer live -->
@@ -275,29 +345,7 @@
           </article>
 
           <article class="project-card reveal">
-            <div class="project-header">
-              <h3 class="project-title">LLM Data Quality Analyzer</h3>
-              <span class="status-badge status-live">Live</span>
-            </div>
-            <p class="project-desc">
-              A tool that uses large language models to automatically detect data quality issues —
-              schema inconsistencies, anomalies, missing value patterns, and semantic errors —
-              in structured datasets, generating human-readable diagnostics and remediation suggestions.
-            </p>
-            <ul class="chip-list project-tags" aria-label="Technologies used">
-              <li><span class="chip">Python</span></li>
-              <li><span class="chip">LLMs</span></li>
-              <li><span class="chip">pandas</span></li>
-              <li><span class="chip">OpenAI</span></li>
-              <li><span class="chip">Pydantic</span></li>
-            </ul>
-            <div class="project-links">
-              <a class="btn btn-sm" href="https://github.com/farmand-bt/llm-data-quality-analyzer" target="_blank" rel="noopener">GitHub</a>
-              <a class="btn btn-sm btn-outline" href="https://llm-data-quality-analyzer.streamlit.app/" target="_blank" rel="noopener">Live Demo</a>
-            </div>
-          </article>
-
-          <article class="project-card reveal">
+            <p class="project-date">March 2026</p>
             <div class="project-header">
               <h3 class="project-title">Knowledge Graph Question Answering (KGQA)</h3>
               <span class="status-badge status-live">Live</span>
@@ -325,6 +373,7 @@
           </article>
 
           <article class="project-card reveal">
+            <p class="project-date">July 2025</p>
             <div class="project-header">
               <h3 class="project-title">Bayesian Football Result Prediction</h3>
               <span class="status-badge status-research">Research</span>
@@ -439,6 +488,15 @@
             </ul>
           </div>
 
+          <div class="skill-group reveal">
+            <h3 class="skill-group-label">Spoken Languages</h3>
+            <ul class="chip-list" role="list" aria-label="Spoken languages">
+              <li><span class="chip">Persian — Native</span></li>
+              <li><span class="chip">English — C1</span></li>
+              <li><span class="chip">German — B1</span></li>
+            </ul>
+          </div>
+
         </div>
       </div>
     </section>
@@ -454,8 +512,9 @@
         </div>
 
         <p class="contact-intro reveal">
-          I'm open to research collaborations, internship opportunities, and conversations
-          about data science and AI. The fastest way to reach me:
+          I'm open to research collaborations, internships, and — after graduation —
+          full-time roles in data science, data engineering, and AI engineering.
+          The fastest way to reach me:
         </p>
 
         <a class="contact-email reveal" href="mailto:farmand.bazdiditehrani@gmail.com">
