@@ -16,23 +16,18 @@
   var toggle = document.getElementById('theme-toggle');
   if (!toggle) return;
 
-  /* Read saved preference, or fall back to the OS preference. */
-  function getInitialTheme() {
-    var saved = localStorage.getItem('theme');
-    if (saved === 'dark' || saved === 'light') return saved;
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-  }
-
-  /* Apply a theme: update the data attribute, button icon, and aria state. */
+  /*
+   * The theme itself is applied before first paint by the inline snippet
+   * in <head>; here we only sync the toggle's aria state (the visible
+   * icon is chosen by CSS via [data-theme]).
+   */
   function applyTheme(theme) {
-    root.dataset.theme    = theme;
-    toggle.textContent    = theme === 'dark' ? '☀' : '🌙';
-    toggle.ariaLabel      = theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme';
+    root.dataset.theme = theme;
+    toggle.ariaLabel   = theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme';
     toggle.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
   }
 
-  /* Set the theme on page load — before first paint where possible. */
-  applyTheme(getInitialTheme());
+  applyTheme(root.dataset.theme === 'dark' ? 'dark' : 'light');
 
   /* Flip the theme on each click and persist the choice. */
   toggle.addEventListener('click', function () {
@@ -64,16 +59,30 @@
   }
 
   /*
-   * Threshold 0.35: the link updates once about a third of the section
-   * is in view — feels natural without being jumpy at section boundaries.
+   * Scan-line observer: a section is "active" while it crosses a band
+   * 40% down the viewport. Unlike a ratio threshold, this works for
+   * sections taller than the viewport (Projects, Skills on mobile).
    */
   var spy = new IntersectionObserver(function (entries) {
     entries.forEach(function (entry) {
       if (entry.isIntersecting) setActive(entry.target.id);
     });
-  }, { threshold: 0.35 });
+  }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
 
   sections.forEach(function (s) { spy.observe(s); });
+}());
+
+
+/* ============================================================
+   4. External links — screen-reader hint for target="_blank"
+   ============================================================ */
+(function () {
+  document.querySelectorAll('a[target="_blank"]').forEach(function (a) {
+    var hint = document.createElement('span');
+    hint.className = 'visually-hidden';
+    hint.textContent = ' (opens in new tab)';
+    a.appendChild(hint);
+  });
 }());
 
 

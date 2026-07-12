@@ -32,6 +32,7 @@ All content lives in `index.html`. Each section is commented with what to edit.
 - **Projects**: copy an `<article class="project-card reveal">` block. Status badges:
   `status-live`, `status-progress`, `status-research`.
 - **Skills**: chips are plain `<span class="chip">` elements. Tool logos come from
-  [cdn.simpleicons.org](https://simpleicons.org) tinted violet (`8464d8`); tools without
-  an icon there are text-only chips.
+  [cdn.simpleicons.org](https://simpleicons.org), rendered as CSS masks filled with the
+  theme accent (so they adapt to light/dark); tools without an icon there are text-only
+  chips.
 - **CV**: replace `assets/CV.pdf` — note the filename is case-sensitive on GitHub Pages.
