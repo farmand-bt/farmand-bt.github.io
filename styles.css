@@ -169,6 +169,23 @@ main section {
 main section:last-of-type { border-bottom: none; }
 
 
+/* Screen-reader-only text (e.g. "opens in new tab" on external links) */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Focus target for the skip link — no visible ring on programmatic focus */
+main:focus { outline: none; }
+
+
 /* ============================================================
    4. Skip link
    ============================================================ */
@@ -239,7 +256,7 @@ main section:last-of-type { border-bottom: none; }
 .nav-links a {
   position: relative;
   display: inline-block;
-  padding: var(--sp-2) var(--sp-3);
+  padding: var(--sp-3) var(--sp-3);
   font-size: 0.875rem;
   font-weight: 500;
   color: var(--ink-soft);
@@ -267,22 +284,24 @@ main section:last-of-type { border-bottom: none; }
 .nav-links a[aria-current="page"] { color: var(--ink); }
 .nav-links a[aria-current="page"]::after { transform: scaleX(1); }
 
-/* Theme toggle button */
+/* Theme toggle button — 44px hit area, icon chosen by [data-theme] */
 #theme-toggle {
   flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
-  font-size: 1rem;
   color: var(--ink-soft);
   border: 1px solid var(--rule);
   transition: background-color 150ms var(--ease),
               border-color 150ms var(--ease),
               color 150ms var(--ease);
 }
+.toggle-icon { width: 18px; height: 18px; }
+[data-theme="light"] .icon-sun  { display: none; }
+[data-theme="dark"]  .icon-moon { display: none; }
 #theme-toggle:hover {
   background-color: var(--surface-alt);
   border-color: var(--ink-soft);
@@ -296,6 +315,8 @@ main section:last-of-type { border-bottom: none; }
 #home {
   position: relative;
   min-height: calc(100vh - var(--header-h));
+  /* svh tracks the real visible viewport on mobile (URL bar collapse) */
+  min-height: calc(100svh - var(--header-h));
   display: flex;
   align-items: center;
   overflow: hidden;
@@ -414,19 +435,9 @@ main section:last-of-type { border-bottom: none; }
    Numbered index + serif heading + hairline rule.
    ============================================================ */
 .section-head {
-  display: flex;
-  align-items: baseline;
-  gap: var(--sp-4);
   margin-bottom: var(--sp-12);
   border-bottom: 1px solid var(--rule);
   padding-bottom: var(--sp-4);
-}
-
-.section-index {
-  font-size: 0.8125rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  color: var(--accent);
 }
 
 .section-heading {
@@ -598,10 +609,10 @@ main section:last-of-type { border-bottom: none; }
   padding-block: var(--sp-3);
   border-top: 1px solid var(--rule);
   text-decoration: none;
-  transition: padding-left 200ms var(--ease);
+  transition: transform 200ms var(--ease);
 }
 .cert-list li:last-child .cert-link { border-bottom: 1px solid var(--rule); }
-.cert-link:hover { text-decoration: none; padding-left: var(--sp-2); }
+.cert-link:hover { text-decoration: none; transform: translateX(var(--sp-2)); }
 
 .cert-name {
   font-size: 0.9375rem;
@@ -750,8 +761,9 @@ main section:last-of-type { border-bottom: none; }
   text-decoration: none;
   border-bottom: 1.5px solid var(--accent);
   padding-bottom: var(--sp-1);
-  margin-bottom: var(--sp-10);
-  overflow-wrap: anywhere;
+  margin-bottom: var(--sp-8);
+  /* Break only at the <wbr> before the @, never mid-word */
+  overflow-wrap: normal;
   transition: color 150ms var(--ease);
 }
 .contact-email:hover { color: var(--accent); text-decoration: none; }
@@ -774,10 +786,10 @@ main section:last-of-type { border-bottom: none; }
   padding-block: var(--sp-4);
   border-top: 1px solid var(--rule);
   text-decoration: none;
-  transition: padding-left 200ms var(--ease);
+  transition: transform 200ms var(--ease);
 }
 .contact-list li:last-child .contact-link { border-bottom: 1px solid var(--rule); }
-.contact-link:hover { text-decoration: none; padding-left: var(--sp-2); }
+.contact-link:hover { text-decoration: none; transform: translateX(var(--sp-2)); }
 
 .contact-network {
   font-weight: 600;
@@ -797,6 +809,7 @@ main section:last-of-type { border-bottom: none; }
   align-items: center;
   gap: var(--sp-5);
   flex-wrap: wrap;
+  margin-bottom: var(--sp-10);
 }
 
 
@@ -897,16 +910,20 @@ main section:last-of-type { border-bottom: none; }
   font-weight: 500;
   background-color: var(--chip-bg);
   color: var(--chip-ink);
-  border: 1px solid transparent;
-  transition: border-color 150ms var(--ease);
 }
-.chip:hover { border-color: var(--accent); }
 
-/* Tool logo inside a chip — hidden entirely if the CDN request fails */
+/*
+  Tool logo inside a chip: the SVG from cdn.simpleicons.org is used as a
+  mask filled with the theme accent, so icons match both themes. If the
+  CDN request fails, the mask is empty and the chip degrades to text-only.
+*/
 .chip-icon {
   width: 14px;
   height: 14px;
   flex-shrink: 0;
+  background-color: var(--accent);
+  -webkit-mask: var(--icon) center / contain no-repeat;
+  mask: var(--icon) center / contain no-repeat;
 }
 
 
@@ -914,13 +931,15 @@ main section:last-of-type { border-bottom: none; }
    16. Reveal animation (fade + slide up on scroll)
    class added by IntersectionObserver in script.js
    ============================================================ */
-.reveal {
+/* Gated behind html.js (set by the inline head script) so that content
+   stays fully visible when JavaScript is unavailable. */
+html.js .reveal {
   opacity: 0;
   transform: translateY(20px);
   transition: opacity 500ms var(--ease),
               transform 500ms var(--ease);
 }
-.reveal.is-visible {
+html.js .reveal.is-visible {
   opacity: 1;
   transform: translateY(0);
 }
@@ -943,13 +962,13 @@ main section:last-of-type { border-bottom: none; }
    18. Responsive — ≤540px (mobile)
    ============================================================ */
 @media (max-width: 540px) {
-  /* Taller effective header because nav links wrap to a second row */
-  :root { --header-h: 100px; }
-  html  { scroll-padding-top: 100px; }
+  /* Taller effective header because nav links wrap below the brand row */
+  :root { --header-h: 156px; }
+  html  { scroll-padding-top: 156px; }
 
   .site-header { height: auto; min-height: 64px; }
 
-  /* Allow nav to wrap: brand + toggle on top row, links on second row */
+  /* Allow nav to wrap: brand + toggle on top row, links below */
   .nav {
     flex-wrap: wrap;
     align-items: center;
@@ -961,17 +980,21 @@ main section:last-of-type { border-bottom: none; }
   /* Keep the toggle pinned to the right of the top row */
   #theme-toggle { margin-left: auto; }
 
-  /* Push nav-links to full width on a second row */
+  /* Links take full width and wrap — every destination stays visible */
   .nav-links {
     order: 3;
     flex: 0 0 100%;
+    flex-wrap: wrap;
     justify-content: flex-start;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
     padding-bottom: var(--sp-1);
   }
-  .nav-links::-webkit-scrollbar { display: none; }
+  .nav-links a { padding-block: var(--sp-2); }
+
+  /* One-line email link at phone widths */
+  .contact-email { font-size: 1.125rem; }
+
+  /* Tighter hero so all four CTAs fit the first screen */
+  .home-inner { padding-block: var(--sp-8); }
 
   /* Tighten section padding */
   main section { padding-block: var(--sp-16); }
@@ -1010,7 +1033,7 @@ main section:last-of-type { border-bottom: none; }
   }
 
   /* Make all reveal elements immediately visible */
-  .reveal {
+  html.js .reveal {
     opacity: 1;
     transform: none;
   }
