@@ -602,10 +602,10 @@ main:focus { outline: none; }
 }
 
 .cert-link {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: var(--sp-4);
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--sp-1) var(--sp-4);
   padding-block: var(--sp-3);
   border-top: 1px solid var(--rule);
   text-decoration: none;
@@ -614,12 +614,46 @@ main:focus { outline: none; }
 .cert-list li:last-child .cert-link { border-bottom: 1px solid var(--rule); }
 .cert-link:hover { text-decoration: none; transform: translateX(var(--sp-2)); }
 
+/* Round issuer mark — masked logo, or a serif initial as fallback */
+.cert-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+.cert-mark-icon {
+  width: 18px;
+  height: 18px;
+  background-color: var(--accent);
+  -webkit-mask: var(--icon) center / contain no-repeat;
+  mask: var(--icon) center / contain no-repeat;
+}
+[data-theme="dark"] .cert-mark { color: var(--accent); }
+
+.cert-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
 .cert-name {
   font-size: 0.9375rem;
   font-weight: 500;
   color: var(--ink);
 }
 .cert-link:hover .cert-name { color: var(--accent); }
+.cert-issuer {
+  font-size: 0.8125rem;
+  color: var(--ink-soft);
+}
 .cert-meta {
   flex-shrink: 0;
   font-size: 0.8125rem;
@@ -627,6 +661,12 @@ main:focus { outline: none; }
   text-align: right;
   white-space: nowrap;
 }
+.cert-arrow {
+  display: inline-block;
+  color: var(--accent);
+  transition: transform 200ms var(--ease);
+}
+.cert-link:hover .cert-arrow { transform: translate(2px, -2px); }
 
 
 /* ============================================================
@@ -792,10 +832,21 @@ main:focus { outline: none; }
 .contact-link:hover { text-decoration: none; transform: translateX(var(--sp-2)); }
 
 .contact-network {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-3);
   font-weight: 600;
   font-size: 0.9375rem;
   color: var(--ink);
 }
+.contact-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  color: var(--ink-soft);
+  transition: color 150ms var(--ease);
+}
+.contact-link:hover .contact-icon { color: var(--accent); }
 .contact-link:hover .contact-network { color: var(--accent); }
 .contact-handle {
   font-size: 0.875rem;
@@ -850,6 +901,7 @@ main:focus { outline: none; }
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: var(--sp-2);
   padding: 0.625rem var(--sp-6);
   border-radius: 99px;
   border: 1px solid var(--ink);
@@ -888,6 +940,12 @@ main:focus { outline: none; }
 .btn-sm {
   padding: var(--sp-2) var(--sp-5);
   font-size: 0.8125rem;
+}
+
+.btn-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
 }
 
 
@@ -1006,11 +1064,11 @@ html.js .reveal.is-visible {
   /* Skills: single column */
   .skills-grid { grid-template-columns: 1fr; }
 
-  /* Contact and certification rows stack */
+  /* Contact rows stack; cert rows keep the mark and wrap the date under */
   .contact-link { flex-direction: column; align-items: flex-start; gap: 2px; }
   .contact-handle { text-align: left; }
-  .cert-link { flex-direction: column; align-items: flex-start; gap: 2px; }
-  .cert-meta { text-align: left; white-space: normal; }
+  .cert-link { grid-template-columns: auto 1fr; }
+  .cert-meta { grid-column: 2; text-align: left; white-space: normal; }
 
   /* Footer: stack */
   .footer-inner {
