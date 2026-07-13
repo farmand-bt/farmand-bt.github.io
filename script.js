@@ -1,10 +1,11 @@
 /* ============================================================
    script.js — Farmand Bazdiditehrani Portfolio
 
-   Three independent blocks:
-     1. Theme toggle  (dark ↔ light, persists in localStorage)
-     2. Scroll-spy    (highlights the active nav link)
-     3. Reveal        (fade-in animation on scroll)
+   Four independent blocks:
+     1. Theme toggle    (dark ↔ light, persists in localStorage)
+     2. Scroll-spy      (highlights the active nav link)
+     3. External links  (screen-reader new-tab hint)
+     4. Reveal          (fade-in animation on scroll)
    ============================================================ */
 
 
@@ -74,7 +75,7 @@
 
 
 /* ============================================================
-   4. External links — screen-reader hint for target="_blank"
+   3. External links — screen-reader hint for target="_blank"
    ============================================================ */
 (function () {
   document.querySelectorAll('a[target="_blank"]').forEach(function (a) {
@@ -87,7 +88,7 @@
 
 
 /* ============================================================
-   3. Reveal on scroll
+   4. Reveal on scroll
    ============================================================ */
 (function () {
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
