@@ -14,11 +14,16 @@
       "label": { "displayName": "Label", "purpose": "Uppercase tracked kickers, dates, group labels. Never Fraunces." }
     },
     "shadows": [
-      { "name": "card-hover", "value": "0 8px 32px rgba(28, 24, 38, 0.07)", "purpose": "Project card hover lift only; nothing casts a shadow at rest. Dark theme: 0 8px 32px rgba(0,0,0,0.35)." }
+      { "name": "card-hover", "value": "0 8px 32px rgba(28, 24, 38, 0.07)", "purpose": "Project card hover lift only; nothing casts a shadow at rest." },
+      { "name": "card-hover-dark", "value": "0 8px 32px rgba(0, 0, 0, 0.35)", "purpose": "Dark-theme variant of card-hover." }
     ],
     "motion": [
-      { "name": "ease-standard", "value": "cubic-bezier(0.4, 0, 0.2, 1)", "purpose": "Default easing for all transitions (--ease)." },
-      { "name": "dur-standard", "value": "250ms", "purpose": "Theme transitions and card hovers (--dur); micro-interactions run 150-200ms." }
+      { "name": "ease-standard", "value": "cubic-bezier(0.4, 0, 0.2, 1)", "purpose": "Hover, colour, and theme transitions (--ease)." },
+      { "name": "ease-out", "value": "cubic-bezier(0.23, 1, 0.32, 1)", "purpose": "Entrances (--ease-out): reveal-on-scroll and anything appearing. Never ease-in on UI." },
+      { "name": "dur-fast", "value": "150ms", "purpose": "Colour/hover micro-feedback (--dur-fast)." },
+      { "name": "dur-mid", "value": "200ms", "purpose": "Hover movement: row slides, lifts, underlines (--dur-mid)." },
+      { "name": "dur-standard", "value": "250ms", "purpose": "Theme switch surface transitions (--dur)." },
+      { "name": "dur-enter", "value": "400ms", "purpose": "Content entrances with --ease-out (--dur-enter)." }
     ],
     "breakpoints": [
       { "name": "tablet", "value": "900px" },

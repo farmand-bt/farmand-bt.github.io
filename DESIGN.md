@@ -46,6 +46,39 @@ typography:
     fontSize: "0.8125rem"
     fontWeight: 600
     letterSpacing: "0.1em"
+  micro:
+    fontFamily: "Inter, system-ui, sans-serif"
+    fontSize: "0.75rem"
+    fontWeight: 600
+    letterSpacing: "0.14em"
+  caption:
+    fontFamily: "Inter, system-ui, sans-serif"
+    fontSize: "0.875rem"
+    fontWeight: 500
+  body-sm:
+    fontFamily: "Inter, system-ui, sans-serif"
+    fontSize: "0.9375rem"
+    fontWeight: 400
+    lineHeight: 1.7
+  body-lg:
+    fontFamily: "Inter, system-ui, sans-serif"
+    fontSize: "1.0625rem"
+    fontWeight: 400
+    lineHeight: 1.85
+  tagline:
+    fontFamily: "Inter, system-ui, sans-serif"
+    fontSize: "1.125rem"
+    fontWeight: 400
+    lineHeight: 1.75
+  title-sm:
+    fontFamily: "Fraunces, Georgia, serif"
+    fontSize: "1.25rem"
+    fontWeight: 500
+    lineHeight: 1.3
+  brand:
+    fontFamily: "Fraunces, Georgia, serif"
+    fontSize: "1.5rem"
+    fontWeight: 600
 rounded:
   sm: "4px"
   lg: "10px"

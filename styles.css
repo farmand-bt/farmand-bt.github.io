@@ -76,9 +76,15 @@
   --font:         'Inter', system-ui, -apple-system, sans-serif;
   --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
 
-  /* Transitions */
-  --dur:  250ms;
-  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  /* Motion — durations step up with distance travelled.
+     --ease is for hovers and theme/colour changes; --ease-out is for
+     entrances (starts fast, settles slow — never ease-in on UI). */
+  --dur-fast:  150ms;
+  --dur-mid:   200ms;
+  --dur:       250ms;
+  --dur-enter: 400ms;
+  --ease:      cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out:  cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 /* Dark theme — only override what changes */
@@ -134,7 +140,7 @@ img, picture, video, svg { display: block; max-width: 100%; }
 a {
   color: var(--accent);
   text-decoration: none;
-  transition: color 150ms var(--ease);
+  transition: color var(--dur-fast) var(--ease);
 }
 a:hover { color: var(--accent-hov); text-decoration: underline; }
 
@@ -203,7 +209,7 @@ main:focus { outline: none; }
   font-weight: 600;
   font-size: 0.875rem;
   transform: translateY(-200%);
-  transition: transform 150ms var(--ease);
+  transition: transform var(--dur-fast) var(--ease);
 }
 .skip-link:focus { transform: translateY(0); }
 
@@ -264,7 +270,7 @@ main:focus { outline: none; }
   color: var(--ink-soft);
   white-space: nowrap;
   text-decoration: none;
-  transition: color 150ms var(--ease);
+  transition: color var(--dur-fast) var(--ease);
 }
 /* Editorial underline that grows in on hover / active */
 .nav-links a::after {
@@ -277,10 +283,9 @@ main:focus { outline: none; }
   background: var(--accent);
   transform: scaleX(0);
   transform-origin: left;
-  transition: transform 200ms var(--ease);
+  transition: transform var(--dur-mid) var(--ease);
 }
 .nav-links a:hover { color: var(--ink); text-decoration: none; }
-.nav-links a:hover::after { transform: scaleX(1); }
 
 /* Active section — set by scroll-spy in script.js */
 .nav-links a[aria-current="page"] { color: var(--ink); }
@@ -297,9 +302,9 @@ main:focus { outline: none; }
   border-radius: 50%;
   color: var(--ink-soft);
   border: 1px solid var(--rule);
-  transition: background-color 150ms var(--ease),
-              border-color 150ms var(--ease),
-              color 150ms var(--ease);
+  transition: background-color var(--dur-fast) var(--ease),
+              border-color var(--dur-fast) var(--ease),
+              color var(--dur-fast) var(--ease);
 }
 .toggle-icon { width: 18px; height: 18px; }
 [data-theme="light"] .icon-sun  { display: none; }
@@ -429,9 +434,10 @@ main:focus { outline: none; }
   width: 56px;
   height: 1px;
   background: currentColor;
-  transition: width 200ms var(--ease);
+  /* Grows via scaleX (compositor-only), never by animating width */
+  transform-origin: left;
+  transition: transform var(--dur-mid) var(--ease);
 }
-.home-scroll:hover .home-scroll-line { width: 80px; }
 
 
 /* ============================================================
@@ -581,7 +587,7 @@ main:focus { outline: none; }
 }
 
 .timeline-note {
-  font-size: 0.9rem;
+  font-size: 0.9375rem;
   color: var(--ink-soft);
   line-height: 1.7;
 }
@@ -613,10 +619,10 @@ main:focus { outline: none; }
   padding-block: var(--sp-3);
   border-top: 1px solid var(--rule);
   text-decoration: none;
-  transition: transform 200ms var(--ease);
+  transition: transform var(--dur-mid) var(--ease);
 }
 .cert-list li:last-child .cert-link { border-bottom: 1px solid var(--rule); }
-.cert-link:hover { text-decoration: none; transform: translateX(var(--sp-2)); }
+.cert-link:hover { text-decoration: none; }
 
 /* Round issuer mark — masked logo, or a serif initial as fallback */
 .cert-mark {
@@ -652,6 +658,8 @@ main:focus { outline: none; }
   font-size: 0.9375rem;
   font-weight: 500;
   color: var(--ink);
+  /* Matches the row slide so label, icon, and motion move as one */
+  transition: color var(--dur-mid) var(--ease);
 }
 .cert-link:hover .cert-name { color: var(--accent); }
 .cert-issuer {
@@ -668,9 +676,8 @@ main:focus { outline: none; }
 .cert-arrow {
   display: inline-block;
   color: var(--accent);
-  transition: transform 200ms var(--ease);
+  transition: transform var(--dur-mid) var(--ease);
 }
-.cert-link:hover .cert-arrow { transform: translate(2px, -2px); }
 
 
 /* ============================================================
@@ -690,18 +697,17 @@ main:focus { outline: none; }
   border: 1px solid var(--rule);
   border-radius: var(--radius-lg);
   padding: var(--sp-8);
-  transition: border-color var(--dur) var(--ease),
-              box-shadow var(--dur) var(--ease),
-              transform var(--dur) var(--ease),
+  /* Hover feedback at --dur-mid; background stays on --dur for the
+     theme switch */
+  transition: border-color var(--dur-mid) var(--ease),
+              box-shadow var(--dur-mid) var(--ease),
+              transform var(--dur-mid) var(--ease),
               background-color var(--dur) var(--ease);
 }
+/* Border recolour is safe on touch; the lift lives in the
+   pointer-only block (section 16) */
 .project-card:hover {
   border-color: var(--accent);
-  box-shadow: 0 8px 32px rgba(28, 24, 38, 0.07);
-  transform: translateY(-3px);
-}
-[data-theme="dark"] .project-card:hover {
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
 }
 
 .project-date {
@@ -808,14 +814,13 @@ main:focus { outline: none; }
   margin-bottom: var(--sp-8);
   /* Break only at the <wbr> before the @, never mid-word */
   overflow-wrap: normal;
-  transition: color 150ms var(--ease);
+  transition: color var(--dur-fast) var(--ease);
 }
 .contact-email:hover { color: var(--accent); text-decoration: none; }
 .contact-arrow {
   display: inline-block;
-  transition: transform 200ms var(--ease);
+  transition: transform var(--dur-mid) var(--ease);
 }
-.contact-email:hover .contact-arrow { transform: translateX(6px); }
 
 /* Secondary channels — hairline rows */
 .contact-list {
@@ -830,10 +835,10 @@ main:focus { outline: none; }
   padding-block: var(--sp-4);
   border-top: 1px solid var(--rule);
   text-decoration: none;
-  transition: transform 200ms var(--ease);
+  transition: transform var(--dur-mid) var(--ease);
 }
 .contact-list li:last-child .contact-link { border-bottom: 1px solid var(--rule); }
-.contact-link:hover { text-decoration: none; transform: translateX(var(--sp-2)); }
+.contact-link:hover { text-decoration: none; }
 
 .contact-network {
   display: inline-flex;
@@ -842,13 +847,15 @@ main:focus { outline: none; }
   font-weight: 600;
   font-size: 0.9375rem;
   color: var(--ink);
+  /* Matches the row slide so label, icon, and motion move as one */
+  transition: color var(--dur-mid) var(--ease);
 }
 .contact-icon {
   width: 16px;
   height: 16px;
   flex-shrink: 0;
   color: var(--ink-soft);
-  transition: color 150ms var(--ease);
+  transition: color var(--dur-mid) var(--ease);
 }
 .contact-link:hover .contact-icon { color: var(--accent); }
 .contact-link:hover .contact-network { color: var(--accent); }
@@ -917,17 +924,16 @@ main:focus { outline: none; }
   background-color: var(--ink);
   text-decoration: none;
   cursor: pointer;
-  transition: background-color 150ms var(--ease),
-              border-color 150ms var(--ease),
-              color 150ms var(--ease),
-              transform 150ms var(--ease);
+  transition: background-color var(--dur-fast) var(--ease),
+              border-color var(--dur-fast) var(--ease),
+              color var(--dur-fast) var(--ease),
+              transform var(--dur-fast) var(--ease);
 }
 .btn:hover {
   background-color: var(--accent);
   border-color: var(--accent);
   color: #fff;
   text-decoration: none;
-  transform: translateY(-1px);
 }
 [data-theme="dark"] .btn:hover { color: #131019; }
 
@@ -992,7 +998,37 @@ main:focus { outline: none; }
 
 
 /* ============================================================
-   16. Reveal animation (fade + slide up on scroll)
+   16. Pointer-only hover motion
+   Transform-based hover feedback lives here so taps on touch
+   screens don't leave elements stuck in a "hovered" position.
+   Colour/border hover feedback stays ungated.
+   ============================================================ */
+@media (hover: hover) and (pointer: fine) {
+  .nav-links a:hover::after { transform: scaleX(1); }
+
+  /* 56px → 80px */
+  .home-scroll:hover .home-scroll-line { transform: scaleX(1.43); }
+
+  .btn:hover { transform: translateY(-1px); }
+
+  .project-card:hover {
+    box-shadow: 0 8px 32px rgba(28, 24, 38, 0.07);
+    transform: translateY(-3px);
+  }
+  [data-theme="dark"] .project-card:hover {
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+  }
+
+  .cert-link:hover { transform: translateX(var(--sp-2)); }
+  .cert-link:hover .cert-arrow { transform: translate(2px, -2px); }
+
+  .contact-link:hover { transform: translateX(var(--sp-2)); }
+  .contact-email:hover .contact-arrow { transform: translateX(6px); }
+}
+
+
+/* ============================================================
+   17. Reveal animation (fade + slide up on scroll)
    class added by IntersectionObserver in script.js
    ============================================================ */
 /* Gated behind html.js (set by the inline head script) so that content
@@ -1000,12 +1036,32 @@ main:focus { outline: none; }
 html.js .reveal {
   opacity: 0;
   transform: translateY(20px);
-  transition: opacity 500ms var(--ease),
-              transform 500ms var(--ease);
+  /* Entrances get the strong ease-out: fast start, gentle settle */
+  transition: opacity var(--dur-enter) var(--ease-out),
+              transform var(--dur-enter) var(--ease-out);
 }
 html.js .reveal.is-visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+/*
+  Elements that are BOTH revealed and have their own transitions:
+  the reveal rule above would otherwise replace their transition list
+  entirely (higher specificity), snapping their hover/theme feedback.
+  Re-declare the combined list here, after the reveal block.
+*/
+html.js .project-card.reveal {
+  transition: opacity var(--dur-enter) var(--ease-out),
+              transform var(--dur-enter) var(--ease-out),
+              border-color var(--dur-mid) var(--ease),
+              box-shadow var(--dur-mid) var(--ease),
+              background-color var(--dur) var(--ease);
+}
+html.js .contact-email.reveal {
+  transition: opacity var(--dur-enter) var(--ease-out),
+              transform var(--dur-enter) var(--ease-out),
+              color var(--dur-fast) var(--ease);
 }
 
 
@@ -1091,9 +1147,16 @@ html.js .reveal.is-visible {
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
 
+  /*
+    Reduced motion removes MOVEMENT, not all feedback: transform drops
+    out of every transition (position changes become instant) while
+    colour/opacity feedback — theme fade, link and hover colours —
+    keeps its gentle easing.
+  */
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
+    transition-property: color, background-color, border-color,
+                         opacity, box-shadow !important;
   }
 
   /* Make all reveal elements immediately visible */
