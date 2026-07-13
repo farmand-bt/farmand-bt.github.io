@@ -197,7 +197,9 @@ main:focus { outline: none; }
   padding: var(--sp-2) var(--sp-5);
   border-radius: var(--radius);
   background: var(--accent);
-  color: #fff;
+  /* var(--bg) keeps 4.5:1+ on the accent in BOTH themes (white fails on
+     the light-violet dark-theme accent) */
+  color: var(--bg);
   font-weight: 600;
   font-size: 0.875rem;
   transform: translateY(-200%);
@@ -411,7 +413,9 @@ main:focus { outline: none; }
   display: inline-flex;
   align-items: center;
   gap: var(--sp-3);
-  margin-top: var(--sp-10);
+  margin-top: var(--sp-8);
+  /* Padding keeps the hit area above the 24px WCAG 2.5.8 minimum */
+  padding-block: var(--sp-2);
   font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
@@ -432,7 +436,7 @@ main:focus { outline: none; }
 
 /* ============================================================
    7. Section heading (shared)
-   Numbered index + serif heading + hairline rule.
+   Serif heading over a hairline rule.
    ============================================================ */
 .section-head {
   margin-bottom: var(--sp-12);
@@ -887,6 +891,8 @@ main:focus { outline: none; }
   color: var(--ink);
 }
 .footer-back {
+  display: inline-block;
+  padding-block: var(--sp-2);
   font-weight: 500;
   color: var(--ink-soft);
   text-decoration: none;
