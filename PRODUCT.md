@@ -25,7 +25,7 @@ A master's student who already builds and deploys working LLM and data products 
 - Primary CTA: a paired goal — **Download CV** and **LinkedIn**. These are the two channels recruiters actually use; both must be easy to find and act on.
 - Secondary CTA: email (the direct-contact fallback for anyone ready to talk).
 - The line a visitor remembers after 10 seconds: "A master's student who already builds and deploys working LLM/data products — not just coursework."
-- Belief ladder: (1) this person is real and professionally presented → (2) the academic record is strong (GPA 1.4, ranked 6th of 75) → (3) the projects are real, dated, and live — I can click and use them → (4) the positioning is honest, so the claims are trustworthy → (5) worth a CV download / LinkedIn connect.
+- Belief ladder: (1) this person is real and professionally presented → (2) the academic record is strong (GPA 1.3, ranked 6th of 75) → (3) the projects are real, dated, and live — I can click and use them → (4) the positioning is honest, so the claims are trustworthy → (5) worth a CV download / LinkedIn connect.
 - Proof on hand: three live Streamlit demos with public GitHub repos, verifiable certification links (Credly, Skilljar, Sulitest), named employers and universities, and the downloadable CV at `assets/CV.pdf`.
 
 ## Brand Personality
