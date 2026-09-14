@@ -32,11 +32,18 @@
   -->
   <script>
     (function () {
-      var t = localStorage.getItem('theme');
+      var t, lang;
+      /* Reading storage throws outright when a browser blocks site data,
+         so both reads sit in one guard and fall through to the defaults. */
+      try {
+        t    = localStorage.getItem('theme');
+        lang = localStorage.getItem('lang');
+      } catch (e) {}
       if (t !== 'dark' && t !== 'light') {
         t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
       }
       document.documentElement.dataset.theme = t;
+      document.documentElement.lang = lang === 'de' ? 'de' : 'en';
       document.documentElement.classList.add('js');
     }());
   </script>
@@ -51,26 +58,55 @@
 <body>
 
   <!-- Skip to main content (keyboard / screen reader accessibility) -->
-  <a class="skip-link" href="#main">Skip to content</a>
+  <a class="skip-link" href="#main" data-i18n="a11y.skip">Skip to content</a>
 
   <!-- ============================================================
        HEADER & NAV
        ============================================================ -->
   <header class="site-header">
-    <nav class="nav container" aria-label="Primary navigation">
+    <nav class="nav container" data-i18n-aria-label="a11y.navPrimary" aria-label="Primary navigation">
 
       <!-- Brand monogram — links back to top of page -->
-      <a class="brand" href="#home" aria-label="Farmand Bazdiditehrani — go to top">FB<span class="brand-dot">.</span></a>
+      <a class="brand" href="#home" data-i18n-aria-label="a11y.brand" aria-label="Farmand Bazdiditehrani — go to top">FB<span class="brand-dot">.</span></a>
 
       <!-- Section links — one per section below -->
       <ul class="nav-links" role="list">
-        <li><a href="#about">About</a></li>
-        <li><a href="#experience">Experience</a></li>
-        <li><a href="#education">Education</a></li>
-        <li><a href="#projects">Projects</a></li>
-        <li><a href="#skills">Skills</a></li>
-        <li><a href="#contact">Contact</a></li>
+        <li><a href="#about" data-i18n="nav.about">About</a></li>
+        <li><a href="#experience" data-i18n="nav.experience">Experience</a></li>
+        <li><a href="#education" data-i18n="nav.education">Education</a></li>
+        <li><a href="#projects" data-i18n="nav.projects">Projects</a></li>
+        <li><a href="#skills" data-i18n="nav.skills">Skills</a></li>
+        <li><a href="#contact" data-i18n="nav.contact">Contact</a></li>
       </ul>
+
+      <!--
+        Language switch — English is the default; the choice persists in
+        localStorage and is applied by i18n.js. Flags are paired with an
+        EN / DE label on purpose: a flag names a country, not a language.
+      -->
+      <div class="lang-switch" role="group" data-i18n-aria-label="a11y.langGroup" aria-label="Language">
+        <button type="button" class="lang-option" data-lang-option="en" aria-pressed="true"
+                data-i18n-aria-label="a11y.langEn" aria-label="Switch to English">
+          <svg class="lang-flag" viewBox="0 0 60 30" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+            <clipPath id="flag-uk-clip"><path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/></clipPath>
+            <path d="M0,0 v30 h60 v-30 z" fill="#012169"/>
+            <path d="M0,0 L60,30 M60,0 L0,30" stroke="#ffffff" stroke-width="6"/>
+            <path d="M0,0 L60,30 M60,0 L0,30" clip-path="url(#flag-uk-clip)" stroke="#c8102e" stroke-width="4"/>
+            <path d="M30,0 v30 M0,15 h60" stroke="#ffffff" stroke-width="10"/>
+            <path d="M30,0 v30 M0,15 h60" stroke="#c8102e" stroke-width="6"/>
+          </svg>
+          <span class="lang-code">EN</span>
+        </button>
+        <button type="button" class="lang-option" data-lang-option="de" aria-pressed="false"
+                data-i18n-aria-label="a11y.langDe" aria-label="Switch to German">
+          <svg class="lang-flag" viewBox="0 0 5 3" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+            <rect width="5" height="3" fill="#000000"/>
+            <rect width="5" height="2" y="1" fill="#dd0000"/>
+            <rect width="5" height="1" y="2" fill="#ffce00"/>
+          </svg>
+          <span class="lang-code">DE</span>
+        </button>
+      </div>
 
       <!-- Dark / light theme toggle — the visible icon is chosen by CSS via [data-theme] -->
       <button id="theme-toggle" aria-label="Switch to dark theme" aria-pressed="false">
@@ -85,7 +121,7 @@
     <!-- ============================================================
          HOME / HERO
          ============================================================ -->
-    <section id="home" aria-label="Introduction">
+    <section id="home" data-i18n-aria-label="a11y.intro" aria-label="Introduction">
       <!-- Decorative monogram ornament (purely visual) -->
       <div class="hero-ornament" aria-hidden="true">
         <span class="ornament-glyph">F</span>
@@ -94,22 +130,22 @@
       </div>
 
       <div class="container home-inner">
-        <p class="home-kicker">Data, Analytics &amp; AI · Lüneburg, Germany</p>
+        <p class="home-kicker" data-i18n="hero.kicker">Data, Analytics &amp; AI · Lüneburg, Germany</p>
         <h1 class="home-name">Farmand<br /><em>Bazdiditehrani</em></h1>
-        <p class="home-tagline">
+        <p class="home-tagline" data-i18n="hero.tagline">
           M.Sc. Management &amp; Data Science student at Leuphana University.
           I build intelligent data products: BI dashboards, ETL pipelines,
           LLM-powered applications, and conversational AI systems. I'm working
           toward data science, data engineering, and AI engineering roles.
         </p>
         <div class="home-links">
-          <a class="btn" href="assets/CV.pdf" download="Farmand_Bazdiditehrani_CV.pdf"><svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>Download CV</a>
+          <a class="btn" href="assets/CV.pdf" download="Farmand_Bazdiditehrani_CV.pdf"><svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg><span data-i18n="hero.cv">Download CV</span></a>
           <a class="btn" href="https://linkedin.com/in/farmand-bt" target="_blank" rel="noopener">LinkedIn</a>
           <a class="btn btn-outline" href="https://github.com/farmand-bt" target="_blank" rel="noopener">GitHub</a>
-          <a class="btn btn-outline" href="mailto:farmand.bazdiditehrani@gmail.com">Email me</a>
+          <a class="btn btn-outline" href="mailto:farmand.bazdiditehrani@gmail.com" data-i18n="hero.email">Email me</a>
         </div>
-        <a class="home-scroll" href="#about" aria-label="Scroll to About section">
-          <span>Scroll</span>
+        <a class="home-scroll" href="#about" data-i18n-aria-label="a11y.scrollAbout" aria-label="Scroll to About section">
+          <span data-i18n="hero.scroll">Scroll</span>
           <span class="home-scroll-line" aria-hidden="true"></span>
         </a>
       </div>
@@ -121,23 +157,23 @@
     <section id="about" aria-labelledby="about-heading">
       <div class="container">
         <div class="section-head">
-          <h2 id="about-heading" class="section-heading">About</h2>
+          <h2 id="about-heading" class="section-heading" data-i18n="about.heading">About</h2>
         </div>
         <div class="about-body reveal">
-          <p class="about-lede">
+          <p class="about-lede" data-i18n="about.p1">
             My path into data science started with a foundation in Industrial Engineering.
             During my B.Sc. at Iran University of Science and Technology (I graduated
             6th in a cohort of 75), I developed a deep appreciation for systems thinking,
             optimisation, and quantitative methods.
           </p>
-          <p>
+          <p data-i18n="about.p2">
             That grounding led me into hands-on data work: first as a Project Management Officer
             at a gas turbine research centre, then as a BI Junior Specialist at Pars System Energy,
             where I built Power BI dashboards and SQL pipelines that turned raw operational data
             into decisions. Working close to real business problems made the gap between static
             reports and intelligent, adaptive systems impossible to ignore.
           </p>
-          <p>
+          <p data-i18n="about.p3">
             In October 2024 I moved to Germany to pursue an M.Sc. in Management &amp; Data Science
             at Leuphana University (current GPA 1.3), while working as a Data Analytics &amp; AI
             working student at PMI Advisory GmbH. Today I focus on LLM pipelines, RAG architectures,
@@ -155,7 +191,7 @@
     <section id="experience" aria-labelledby="experience-heading">
       <div class="container">
         <div class="section-head">
-          <h2 id="experience-heading" class="section-heading">Experience</h2>
+          <h2 id="experience-heading" class="section-heading" data-i18n="exp.heading">Experience</h2>
         </div>
 
         <ol class="timeline" role="list">
@@ -164,44 +200,44 @@
           <li class="timeline-item reveal">
             <span class="timeline-marker" aria-hidden="true"></span>
             <p class="timeline-meta">
-              <span class="timeline-date">Sep 2025 — Present</span>
-              <span class="timeline-place">Hamburg, Germany</span>
+              <span class="timeline-date" data-i18n="exp.pmi.date">Sep 2025 — Present</span>
+              <span class="timeline-place" data-i18n="exp.pmi.place">Hamburg, Germany</span>
             </p>
             <h3 class="timeline-title">Working Student, Data, Analytics &amp; AI</h3>
             <p class="timeline-org">
               <a href="https://www.pmi-advisory.com" target="_blank" rel="noopener">PMI Advisory GmbH</a>
             </p>
             <ul class="timeline-desc">
-              <li>Designed and implemented data-driven analytical frameworks and platforms, enabling portfolio companies to quantify and monitor value creation drivers, including contributions to Customer Cube 2.0.</li>
-              <li>Engineered and optimised scalable data pipelines and analytical workflows using Python, dbt, and related tools, while delivering ad-hoc data analyses to support acquisitions and investment decisions.</li>
+              <li data-i18n="exp.pmi.b1">Designed and implemented data-driven analytical frameworks and platforms, enabling portfolio companies to quantify and monitor value creation drivers, including contributions to Customer Cube 2.0.</li>
+              <li data-i18n="exp.pmi.b2">Engineered and optimised scalable data pipelines and analytical workflows using Python, dbt, and related tools, while delivering ad-hoc data analyses to support acquisitions and investment decisions.</li>
             </ul>
           </li>
 
           <li class="timeline-item reveal">
             <span class="timeline-marker" aria-hidden="true"></span>
             <p class="timeline-meta">
-              <span class="timeline-date">Apr 2023 — Jul 2024</span>
-              <span class="timeline-place">Tehran, Iran</span>
+              <span class="timeline-date" data-i18n="exp.pars.date">Apr 2023 — Jul 2024</span>
+              <span class="timeline-place" data-i18n="exp.pars.place">Tehran, Iran</span>
             </p>
             <h3 class="timeline-title">BI Junior Specialist</h3>
             <p class="timeline-org">Pars System Energy Company</p>
             <ul class="timeline-desc">
-              <li>Developed and maintained databases and ETL pipelines by cleaning and transforming data from internal systems; created interactive dashboards to improve business performance tracking and data visualisation.</li>
-              <li>Monitored and controlled project timelines and deliverables; implemented an office automation process that reduced manual administrative tasks and increased operational efficiency across the company.</li>
+              <li data-i18n="exp.pars.b1">Developed and maintained databases and ETL pipelines by cleaning and transforming data from internal systems; created interactive dashboards to improve business performance tracking and data visualisation.</li>
+              <li data-i18n="exp.pars.b2">Monitored and controlled project timelines and deliverables; implemented an office automation process that reduced manual administrative tasks and increased operational efficiency across the company.</li>
             </ul>
           </li>
 
           <li class="timeline-item reveal">
             <span class="timeline-marker" aria-hidden="true"></span>
             <p class="timeline-meta">
-              <span class="timeline-date">Aug 2021 — Aug 2023</span>
-              <span class="timeline-place">Tehran, Iran</span>
+              <span class="timeline-date" data-i18n="exp.gtrc.date">Aug 2021 — Aug 2023</span>
+              <span class="timeline-place" data-i18n="exp.gtrc.place">Tehran, Iran</span>
             </p>
             <h3 class="timeline-title">Project Management Officer</h3>
             <p class="timeline-org">Gas Turbine Research Center</p>
             <ul class="timeline-desc">
-              <li>Supported project monitoring by tracking progress, timelines, and ensuring adherence to deliverables.</li>
-              <li>Created dashboards and conducted cost analyses, enabling data-driven decision-making.</li>
+              <li data-i18n="exp.gtrc.b1">Supported project monitoring by tracking progress, timelines, and ensuring adherence to deliverables.</li>
+              <li data-i18n="exp.gtrc.b2">Created dashboards and conducted cost analyses, enabling data-driven decision-making.</li>
             </ul>
           </li>
 
@@ -215,7 +251,7 @@
     <section id="education" aria-labelledby="education-heading">
       <div class="container">
         <div class="section-head">
-          <h2 id="education-heading" class="section-heading">Education</h2>
+          <h2 id="education-heading" class="section-heading" data-i18n="edu.heading">Education</h2>
         </div>
 
         <ol class="timeline" role="list">
@@ -223,22 +259,22 @@
           <li class="timeline-item reveal">
             <span class="timeline-marker" aria-hidden="true"></span>
             <p class="timeline-meta">
-              <span class="timeline-date">Oct 2024 — Present</span>
-              <span class="timeline-badge">GPA 1.3</span>
+              <span class="timeline-date" data-i18n="edu.msc.date">Oct 2024 — Present</span>
+              <span class="timeline-badge" data-i18n="edu.msc.badge">GPA 1.3</span>
             </p>
             <h3 class="timeline-title">M.Sc. Management &amp; Data Science</h3>
             <p class="timeline-org">
               <a href="https://www.leuphana.de" target="_blank" rel="noopener">Leuphana University Lüneburg</a>
             </p>
             <p class="timeline-note">
-              <span class="label">Relevant courses:</span>
+              <span class="label" data-i18n="edu.msc.coursesLabel">Relevant courses:</span>
               Learning from Data, Deep Learning, Statistical Data Analysis, Advanced Machine Learning,
               Probabilistic Modelling, Analyzing Networks, Data Privacy &amp; Ethics
             </p>
             <p class="timeline-note">
-              <span class="label">Thesis (proposal stage):</span>
-              &ldquo;Learning to Route: Cost-Aware Model Selection for Autonomous Multi-Step
-              Coding Agents&rdquo; &mdash; proposal written; to be carried out with PMI Advisory GmbH.
+              <span class="label" data-i18n="edu.msc.thesisLabel">Thesis (proposal stage):</span>
+              <span data-i18n="edu.msc.thesis">&ldquo;Learning to Route: Cost-Aware Model Selection for Autonomous Multi-Step
+              Coding Agents&rdquo; &mdash; proposal written; to be carried out with PMI Advisory GmbH.</span>
             </p>
           </li>
 
@@ -246,16 +282,16 @@
             <span class="timeline-marker" aria-hidden="true"></span>
             <p class="timeline-meta">
               <span class="timeline-date">2019 — 2023</span>
-              <span class="timeline-badge">GPA 18.76 / 20 (German: 1.4) · Ranked 6<sup>th</sup> of 75</span>
+              <span class="timeline-badge" data-i18n="edu.bsc.badge">GPA 18.76 / 20 (German: 1.4) · Ranked 6<sup>th</sup> of 75</span>
             </p>
             <h3 class="timeline-title">B.Sc. Industrial Engineering</h3>
             <p class="timeline-org">Iran University of Science and Technology (IUST)</p>
             <p class="timeline-note">
-              <span class="label">Relevant courses:</span>
+              <span class="label" data-i18n="edu.bsc.coursesLabel">Relevant courses:</span>
               Micro/Macro Economics, Statistics, Project Management, Operations Research, MIS
             </p>
             <p class="timeline-note">
-              <span class="label">Thesis:</span>
+              <span class="label" data-i18n="edu.bsc.thesisLabel">Thesis:</span>
               Developing a Mathematical Model of Food Supply Chain based on RFID Technology
             </p>
           </li>
@@ -269,7 +305,7 @@
           serif initial instead.
         -->
         <div class="certs reveal">
-          <h3 class="certs-label">Certifications</h3>
+          <h3 class="certs-label" data-i18n="edu.certs">Certifications</h3>
           <ul class="cert-list" role="list">
             <li>
               <a class="cert-link" href="https://www.credly.com/badges/ea69f37f-a0e5-44bc-9660-aa54f44959f5" target="_blank" rel="noopener">
@@ -278,7 +314,7 @@
                   <span class="cert-name">Claude Certified Architect</span>
                   <span class="cert-issuer">Anthropic</span>
                 </span>
-                <span class="cert-meta">Jun 2026 – Jun 2027 <span class="cert-arrow" aria-hidden="true">↗</span></span>
+                <span class="cert-meta" data-i18n="edu.cert.architect.meta">Jun 2026 – Jun 2027 <span class="cert-arrow" aria-hidden="true">↗</span></span>
               </a>
             </li>
             <li>
@@ -288,7 +324,7 @@
                   <span class="cert-name">TASK — The Assessment for Sustainability Knowledge</span>
                   <span class="cert-issuer">Sulitest</span>
                 </span>
-                <span class="cert-meta">May 2026 – May 2031 <span class="cert-arrow" aria-hidden="true">↗</span></span>
+                <span class="cert-meta" data-i18n="edu.cert.task.meta">May 2026 – May 2031 <span class="cert-arrow" aria-hidden="true">↗</span></span>
               </a>
             </li>
             <li>
@@ -298,7 +334,7 @@
                   <span class="cert-name">Claude Code in Action</span>
                   <span class="cert-issuer">Anthropic</span>
                 </span>
-                <span class="cert-meta">Apr 2026 <span class="cert-arrow" aria-hidden="true">↗</span></span>
+                <span class="cert-meta" data-i18n="edu.cert.action.meta">Apr 2026 <span class="cert-arrow" aria-hidden="true">↗</span></span>
               </a>
             </li>
             <li>
@@ -308,7 +344,7 @@
                   <span class="cert-name">Building with the Claude API</span>
                   <span class="cert-issuer">Anthropic</span>
                 </span>
-                <span class="cert-meta">Apr 2026 <span class="cert-arrow" aria-hidden="true">↗</span></span>
+                <span class="cert-meta" data-i18n="edu.cert.api.meta">Apr 2026 <span class="cert-arrow" aria-hidden="true">↗</span></span>
               </a>
             </li>
             <li>
@@ -318,7 +354,7 @@
                   <span class="cert-name">Introduction to Model Context Protocol</span>
                   <span class="cert-issuer">Anthropic</span>
                 </span>
-                <span class="cert-meta">Apr 2026 <span class="cert-arrow" aria-hidden="true">↗</span></span>
+                <span class="cert-meta" data-i18n="edu.cert.mcp.meta">Apr 2026 <span class="cert-arrow" aria-hidden="true">↗</span></span>
               </a>
             </li>
             <li>
@@ -328,7 +364,7 @@
                   <span class="cert-name">Introduction to Agent Skills</span>
                   <span class="cert-issuer">Anthropic</span>
                 </span>
-                <span class="cert-meta">Apr 2026 <span class="cert-arrow" aria-hidden="true">↗</span></span>
+                <span class="cert-meta" data-i18n="edu.cert.skills.meta">Apr 2026 <span class="cert-arrow" aria-hidden="true">↗</span></span>
               </a>
             </li>
           </ul>
@@ -342,24 +378,24 @@
     <section id="projects" aria-labelledby="projects-heading">
       <div class="container">
         <div class="section-head">
-          <h2 id="projects-heading" class="section-heading">Projects</h2>
+          <h2 id="projects-heading" class="section-heading" data-i18n="proj.heading">Projects</h2>
         </div>
 
         <div class="projects-grid">
 
           <article class="project-card reveal">
-            <p class="project-date">May 2026</p>
+            <p class="project-date" data-i18n="proj.dq.date">May 2026</p>
             <div class="project-header">
               <h3 class="project-title">LLM Data Quality Analyzer</h3>
               <span class="status-badge status-live">Live</span>
             </div>
-            <p class="project-desc">
+            <p class="project-desc" data-i18n="proj.dq.desc">
               A tool that uses large language models to automatically detect data quality issues
               in structured datasets, including schema inconsistencies, anomalies, missing value
               patterns, and semantic errors, then generates human-readable diagnostics and
               remediation suggestions.
             </p>
-            <ul class="chip-list project-tags" aria-label="Technologies used">
+            <ul class="chip-list project-tags" data-i18n-aria-label="a11y.techUsed" aria-label="Technologies used">
               <li><span class="chip">Python</span></li>
               <li><span class="chip">LLMs</span></li>
               <li><span class="chip">pandas</span></li>
@@ -368,23 +404,23 @@
             </ul>
             <div class="project-links">
               <a class="btn btn-sm" href="https://github.com/farmand-bt/llm-data-quality-analyzer" target="_blank" rel="noopener">GitHub</a>
-              <a class="btn btn-sm btn-outline" href="https://llm-data-quality-analyzer.streamlit.app/" target="_blank" rel="noopener">Live Demo</a>
+              <a class="btn btn-sm btn-outline" href="https://llm-data-quality-analyzer.streamlit.app/" target="_blank" rel="noopener"><span data-i18n="proj.demo">Live Demo</span></a>
             </div>
           </article>
 
           <article class="project-card reveal">
-            <p class="project-date">April 2026</p>
+            <p class="project-date" data-i18n="proj.rag.date">April 2026</p>
             <div class="project-header">
               <h3 class="project-title">Multi-Source Conversational RAG Assistant</h3>
               <!-- Change class to status-progress if no longer live -->
               <span class="status-badge status-live">Live</span>
             </div>
-            <p class="project-desc">
+            <p class="project-desc" data-i18n="proj.rag.desc">
               A conversational AI assistant that retrieves and synthesises information from
               multiple heterogeneous sources (PDFs, web pages, and structured data) using
               a Retrieval-Augmented Generation (RAG) pipeline. Deployed on Streamlit Cloud.
             </p>
-            <ul class="chip-list project-tags" aria-label="Technologies used">
+            <ul class="chip-list project-tags" data-i18n-aria-label="a11y.techUsed" aria-label="Technologies used">
               <li><span class="chip">Python</span></li>
               <li><span class="chip">LangChain</span></li>
               <li><span class="chip">RAG</span></li>
@@ -394,17 +430,17 @@
             </ul>
             <div class="project-links">
               <a class="btn btn-sm" href="https://github.com/farmand-bt/multi-source-conversational-rag" target="_blank" rel="noopener">GitHub</a>
-              <a class="btn btn-sm btn-outline" href="https://multi-source-conversational-rag.streamlit.app/" target="_blank" rel="noopener">Live Demo</a>
+              <a class="btn btn-sm btn-outline" href="https://multi-source-conversational-rag.streamlit.app/" target="_blank" rel="noopener"><span data-i18n="proj.demo">Live Demo</span></a>
             </div>
           </article>
 
           <article class="project-card reveal">
-            <p class="project-date">March 2026</p>
+            <p class="project-date" data-i18n="proj.kgqa.date">March 2026</p>
             <div class="project-header">
               <h3 class="project-title">Knowledge Graph Question Answering (KGQA)</h3>
               <span class="status-badge status-live">Live</span>
             </div>
-            <p class="project-desc">
+            <p class="project-desc" data-i18n="proj.kgqa.desc">
               A hybrid NLP pipeline that answers natural-language questions over the DBpedia
               knowledge graph, chaining entity linking (DBpedia Spotlight), 1-hop relation
               filtering, LLM-based SPARQL generation (Llama 3.3 70B), and live query execution
@@ -412,7 +448,7 @@
               accuracy on 50 LC-QuAD benchmark questions. Course project for Advanced Machine
               Learning (WS 2025/26) at Leuphana University.
             </p>
-            <ul class="chip-list project-tags" aria-label="Technologies used">
+            <ul class="chip-list project-tags" data-i18n-aria-label="a11y.techUsed" aria-label="Technologies used">
               <li><span class="chip">Python</span></li>
               <li><span class="chip">spaCy</span></li>
               <li><span class="chip">SPARQL</span></li>
@@ -422,24 +458,24 @@
             </ul>
             <div class="project-links">
               <a class="btn btn-sm" href="https://github.com/farmand-bt/KGQA_AML" target="_blank" rel="noopener">GitHub</a>
-              <a class="btn btn-sm btn-outline" href="https://knowledge-graph-question-answering-farmand-bazdiditehrani.streamlit.app/" target="_blank" rel="noopener">Live Demo</a>
+              <a class="btn btn-sm btn-outline" href="https://knowledge-graph-question-answering-farmand-bazdiditehrani.streamlit.app/" target="_blank" rel="noopener"><span data-i18n="proj.demo">Live Demo</span></a>
             </div>
           </article>
 
           <article class="project-card reveal">
-            <p class="project-date">July 2025</p>
+            <p class="project-date" data-i18n="proj.bayes.date">July 2025</p>
             <div class="project-header">
               <h3 class="project-title">Bayesian Football Result Prediction</h3>
-              <span class="status-badge status-research">Research</span>
+              <span class="status-badge status-research" data-i18n="proj.research">Research</span>
             </div>
-            <p class="project-desc">
+            <p class="project-desc" data-i18n="proj.bayes.desc">
               Replication and extension of Baio &amp; Blangiardo (2010): Bayesian hierarchical
               models for predicting football results, fitted with MCMC (NUTS) on Italian Serie A
               data. Extends the paper with team-specific home advantage and a covariate model
               decomposing home advantage into stadium quality, travel distance, and fatigue.
               Course project for Probabilistic Modelling at Leuphana University.
             </p>
-            <ul class="chip-list project-tags" aria-label="Technologies used">
+            <ul class="chip-list project-tags" data-i18n-aria-label="a11y.techUsed" aria-label="Technologies used">
               <li><span class="chip">Python</span></li>
               <li><span class="chip">PyMC</span></li>
               <li><span class="chip">ArviZ</span></li>
@@ -461,7 +497,7 @@
     <section id="skills" aria-labelledby="skills-heading">
       <div class="container">
         <div class="section-head">
-          <h2 id="skills-heading" class="section-heading">Skills</h2>
+          <h2 id="skills-heading" class="section-heading" data-i18n="skills.heading">Skills</h2>
         </div>
 
         <!--
@@ -473,8 +509,8 @@
         <div class="skills-grid">
 
           <div class="skill-group reveal">
-            <h3 class="skill-group-label">Programming Languages</h3>
-            <ul class="chip-list" role="list" aria-label="Programming languages">
+            <h3 class="skill-group-label" data-i18n="skills.prog">Programming Languages</h3>
+            <ul class="chip-list" role="list" data-i18n-aria-label="a11y.skills.prog" aria-label="Programming languages">
               <li><span class="chip"><span class="chip-icon" style="--icon: url('https://cdn.simpleicons.org/python')" aria-hidden="true"></span>Python</span></li>
               <li><span class="chip">SQL</span></li>
               <li><span class="chip"><span class="chip-icon" style="--icon: url('https://cdn.simpleicons.org/r')" aria-hidden="true"></span>R</span></li>
@@ -482,8 +518,8 @@
           </div>
 
           <div class="skill-group reveal">
-            <h3 class="skill-group-label">ML &amp; Analysis</h3>
-            <ul class="chip-list" role="list" aria-label="Machine learning and data analysis">
+            <h3 class="skill-group-label" data-i18n="skills.ml">ML &amp; Analysis</h3>
+            <ul class="chip-list" role="list" data-i18n-aria-label="a11y.skills.ml" aria-label="Machine learning and data analysis">
               <li><span class="chip"><span class="chip-icon" style="--icon: url('https://cdn.simpleicons.org/pandas')" aria-hidden="true"></span>pandas</span></li>
               <li><span class="chip"><span class="chip-icon" style="--icon: url('https://cdn.simpleicons.org/polars')" aria-hidden="true"></span>Polars</span></li>
               <li><span class="chip"><span class="chip-icon" style="--icon: url('https://cdn.simpleicons.org/numpy')" aria-hidden="true"></span>NumPy</span></li>
@@ -494,8 +530,8 @@
           </div>
 
           <div class="skill-group reveal">
-            <h3 class="skill-group-label">AI &amp; LLMs</h3>
-            <ul class="chip-list" role="list" aria-label="AI and large language model tools">
+            <h3 class="skill-group-label" data-i18n="skills.ai">AI &amp; LLMs</h3>
+            <ul class="chip-list" role="list" data-i18n-aria-label="a11y.skills.ai" aria-label="AI and large language model tools">
               <li><span class="chip"><span class="chip-icon" style="--icon: url('https://cdn.simpleicons.org/langchain')" aria-hidden="true"></span>LangChain</span></li>
               <li><span class="chip">RAG</span></li>
               <li><span class="chip"><span class="chip-icon" style="--icon: url('https://cdn.simpleicons.org/huggingface')" aria-hidden="true"></span>Hugging Face</span></li>
@@ -505,8 +541,8 @@
           </div>
 
           <div class="skill-group reveal">
-            <h3 class="skill-group-label">BI &amp; Visualisation</h3>
-            <ul class="chip-list" role="list" aria-label="Business intelligence and visualisation">
+            <h3 class="skill-group-label" data-i18n="skills.bi">BI &amp; Visualisation</h3>
+            <ul class="chip-list" role="list" data-i18n-aria-label="a11y.skills.bi" aria-label="Business intelligence and visualisation">
               <li><span class="chip">Power BI</span></li>
               <li><span class="chip"><span class="chip-icon" style="--icon: url('https://cdn.simpleicons.org/apachesuperset')" aria-hidden="true"></span>Superset</span></li>
               <li><span class="chip"><span class="chip-icon" style="--icon: url('https://cdn.simpleicons.org/plotly')" aria-hidden="true"></span>Plotly</span></li>
@@ -515,8 +551,8 @@
           </div>
 
           <div class="skill-group reveal">
-            <h3 class="skill-group-label">Databases &amp; Pipelines</h3>
-            <ul class="chip-list" role="list" aria-label="Databases and data pipeline tools">
+            <h3 class="skill-group-label" data-i18n="skills.db">Databases &amp; Pipelines</h3>
+            <ul class="chip-list" role="list" data-i18n-aria-label="a11y.skills.db" aria-label="Databases and data pipeline tools">
               <li><span class="chip"><span class="chip-icon" style="--icon: url('https://cdn.simpleicons.org/postgresql')" aria-hidden="true"></span>PostgreSQL</span></li>
               <li><span class="chip"><span class="chip-icon" style="--icon: url('https://cdn.simpleicons.org/duckdb')" aria-hidden="true"></span>DuckDB</span></li>
               <li><span class="chip">dbt</span></li>
@@ -525,8 +561,8 @@
           </div>
 
           <div class="skill-group reveal">
-            <h3 class="skill-group-label">Cloud &amp; Tools</h3>
-            <ul class="chip-list" role="list" aria-label="Cloud platforms and developer tools">
+            <h3 class="skill-group-label" data-i18n="skills.cloud">Cloud &amp; Tools</h3>
+            <ul class="chip-list" role="list" data-i18n-aria-label="a11y.skills.cloud" aria-label="Cloud platforms and developer tools">
               <li><span class="chip"><span class="chip-icon" style="--icon: url('https://cdn.simpleicons.org/docker')" aria-hidden="true"></span>Docker</span></li>
               <li><span class="chip"><span class="chip-icon" style="--icon: url('https://cdn.simpleicons.org/git')" aria-hidden="true"></span>Git</span></li>
               <li><span class="chip"><span class="chip-icon" style="--icon: url('https://cdn.simpleicons.org/streamlit')" aria-hidden="true"></span>Streamlit</span></li>
@@ -534,11 +570,11 @@
           </div>
 
           <div class="skill-group reveal">
-            <h3 class="skill-group-label">Spoken Languages</h3>
-            <ul class="chip-list" role="list" aria-label="Spoken languages">
-              <li><span class="chip">Persian — Native</span></li>
-              <li><span class="chip">English — C1</span></li>
-              <li><span class="chip">German — B1</span></li>
+            <h3 class="skill-group-label" data-i18n="skills.spoken">Spoken Languages</h3>
+            <ul class="chip-list" role="list" data-i18n-aria-label="a11y.skills.spoken" aria-label="Spoken languages">
+              <li><span class="chip" data-i18n="skills.persian">Persian — Native</span></li>
+              <li><span class="chip" data-i18n="skills.english">English — C1</span></li>
+              <li><span class="chip" data-i18n="skills.german">German — B1</span></li>
             </ul>
           </div>
 
@@ -552,10 +588,10 @@
     <section id="contact" aria-labelledby="contact-heading">
       <div class="container">
         <div class="section-head">
-          <h2 id="contact-heading" class="section-heading">Contact</h2>
+          <h2 id="contact-heading" class="section-heading" data-i18n="contact.heading">Contact</h2>
         </div>
 
-        <p class="contact-intro reveal">
+        <p class="contact-intro reveal" data-i18n="contact.intro">
           I'm open to research collaborations and internships now, and full-time roles
           in data science, data engineering, and AI engineering after graduation (Summer 2027).
           The fastest way to reach me:
@@ -569,7 +605,7 @@
           <!-- CV download: the download attribute triggers a file save instead of navigation -->
           <a class="btn" href="assets/CV.pdf" download="Farmand_Bazdiditehrani_CV.pdf">
             <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
-            Download CV
+            <span data-i18n="contact.cv">Download CV</span>
           </a>
         </div>
 
@@ -611,10 +647,11 @@
     <div class="container footer-inner">
       <span class="footer-mark" aria-hidden="true">FB<span class="brand-dot">.</span></span>
       <p>© 2026 Farmand Bazdiditehrani</p>
-      <a href="#home" class="footer-back">Back to top ↑</a>
+      <a href="#home" class="footer-back" data-i18n="footer.top">Back to top ↑</a>
     </div>
   </footer>
 
+  <script src="i18n.js" defer></script>
   <script src="script.js" defer></script>
 </body>
 </html>

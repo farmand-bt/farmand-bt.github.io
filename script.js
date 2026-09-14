@@ -6,6 +6,11 @@
      2. Scroll-spy      (highlights the active nav link)
      3. External links  (screen-reader new-tab hint)
      4. Reveal          (fade-in animation on scroll)
+
+   Blocks 1 and 3 own text of their own, so they read it through
+   window.I18N (see i18n.js) and re-label on 'languagechanged'.
+   i18n.js loads first, so window.I18N already exists here — the
+   fallbacks only matter if that file fails to load.
    ============================================================ */
 
 
@@ -17,6 +22,12 @@
   var toggle = document.getElementById('theme-toggle');
   if (!toggle) return;
 
+  function label(theme) {
+    var key = theme === 'dark' ? 'a11y.themeLight' : 'a11y.themeDark';
+    var en  = theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme';
+    return window.I18N ? window.I18N.t(key, en) : en;
+  }
+
   /*
    * The theme itself is applied before first paint by the inline snippet
    * in <head>; here we only sync the toggle's aria state (the visible
@@ -24,17 +35,26 @@
    */
   function applyTheme(theme) {
     root.dataset.theme = theme;
-    toggle.ariaLabel   = theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme';
+    toggle.setAttribute('aria-label', label(theme));
     toggle.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
   }
 
-  applyTheme(root.dataset.theme === 'dark' ? 'dark' : 'light');
+  function currentTheme() {
+    return root.dataset.theme === 'dark' ? 'dark' : 'light';
+  }
+
+  applyTheme(currentTheme());
 
   /* Flip the theme on each click and persist the choice. */
   toggle.addEventListener('click', function () {
-    var next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+    var next = currentTheme() === 'dark' ? 'light' : 'dark';
     applyTheme(next);
-    localStorage.setItem('theme', next);
+    try { localStorage.setItem('theme', next); } catch (e) { /* non-fatal */ }
+  });
+
+  /* Re-label (not re-theme) when the visitor switches language. */
+  document.addEventListener('languagechanged', function () {
+    applyTheme(currentTheme());
   });
 }());
 
@@ -78,12 +98,30 @@
    3. External links — screen-reader hint for target="_blank"
    ============================================================ */
 (function () {
-  document.querySelectorAll('a[target="_blank"]').forEach(function (a) {
-    var hint = document.createElement('span');
-    hint.className = 'visually-hidden';
-    hint.textContent = ' (opens in new tab)';
-    a.appendChild(hint);
-  });
+  var EN = ' (opens in new tab)';
+
+  /*
+   * Re-runnable by design: switching language re-writes link text, so
+   * each hint is created once and then only relabelled. The [data-newtab]
+   * marker is what makes finding an existing hint reliable.
+   */
+  function sync() {
+    var text = window.I18N ? window.I18N.t('a11y.newTab', EN) : EN;
+
+    document.querySelectorAll('a[target="_blank"]').forEach(function (a) {
+      var hint = a.querySelector('.visually-hidden[data-newtab]');
+      if (!hint) {
+        hint = document.createElement('span');
+        hint.className = 'visually-hidden';
+        hint.setAttribute('data-newtab', '');
+        a.appendChild(hint);
+      }
+      hint.textContent = text;
+    });
+  }
+
+  sync();
+  document.addEventListener('languagechanged', sync);
 }());
 
 

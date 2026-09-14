@@ -287,9 +287,66 @@ main:focus { outline: none; }
 }
 .nav-links a:hover { color: var(--ink); text-decoration: none; }
 
+/* German runs longer than English (Berufserfahrung, Ausbildung...), enough
+   to overflow the 820px header. Tightening the link padding only when
+   [lang="de"] is set buys back ~48px and leaves the English nav untouched. */
+html[lang="de"] .nav-links a { padding-inline: var(--sp-2); }
+html[lang="de"] .nav-links a::after { left: var(--sp-2); right: var(--sp-2); }
+
 /* Active section — set by scroll-spy in script.js */
 .nav-links a[aria-current="page"] { color: var(--ink); }
 .nav-links a[aria-current="page"]::after { transform: scaleX(1); }
+
+/* Language switch — two flag buttons in a hairline pill, sized to sit
+   level with the 44px theme toggle beside it. Each flag is paired with
+   an EN / DE label because a flag names a country, not a language; the
+   pressed state carries the accent so the active language is obvious. */
+.lang-switch {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  transition: border-color var(--dur-fast) var(--ease);
+}
+
+.lang-option {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1);
+  padding: 6px 8px;
+  border-radius: 999px;
+  color: var(--ink-soft);
+  transition: background-color var(--dur-fast) var(--ease),
+              color var(--dur-fast) var(--ease);
+}
+
+/* Flags fill a fixed box so both buttons stay the same width; 'slice'
+   crops the differing aspect ratios instead of distorting them. */
+.lang-flag {
+  width: 18px;
+  height: 12px;
+  border-radius: 2px;
+  flex-shrink: 0;
+  opacity: 0.45;
+  transition: opacity var(--dur-fast) var(--ease);
+}
+
+.lang-code {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  line-height: 1;
+}
+
+/* Active language */
+.lang-option[aria-pressed="true"] {
+  background-color: var(--accent-soft);
+  color: var(--chip-ink);
+}
+.lang-option[aria-pressed="true"] .lang-flag { opacity: 1; }
 
 /* Theme toggle button — 44px hit area; the two icons overlap and
    cross-fade with a small turn when [data-theme] flips */
@@ -1032,6 +1089,10 @@ main:focus { outline: none; }
   .cert-link:hover { transform: translateX(var(--sp-2)); }
   .cert-link:hover .cert-arrow { transform: translate(2px, -2px); }
 
+  .lang-switch:hover { border-color: var(--ink-soft); }
+  .lang-option:hover { color: var(--ink); }
+  .lang-option:hover .lang-flag { opacity: 1; }
+
   .contact-link:hover { transform: translateX(var(--sp-2)); }
   .contact-email:hover .contact-arrow { transform: translateX(6px); }
 }
@@ -1039,6 +1100,7 @@ main:focus { outline: none; }
 /* Press feedback — deliberately outside the pointer gate (presses are
    intentional on touch) and after it, so pressing beats the hover lift */
 .btn:active { transform: scale(0.97); }
+.lang-option:active { transform: scale(0.96); }
 
 
 /* ============================================================
@@ -1132,8 +1194,15 @@ html.js .certs.reveal.is-visible .cert-list li:nth-child(6) { transition-delay: 
     height: auto;
   }
 
-  /* Keep the toggle pinned to the right of the top row */
-  #theme-toggle { margin-left: auto; }
+  /* Keep the language switch + theme toggle pinned right on the top row */
+  .lang-switch { margin-left: auto; }
+  #theme-toggle { margin-left: 0; }
+
+  /* Flags alone below 400px — the aria-label still names the language */
+  @media (max-width: 400px) {
+    .lang-code { display: none; }
+    .lang-option { padding: 6px; }
+  }
 
   /* Links take full width and wrap — every destination stays visible */
   .nav-links {

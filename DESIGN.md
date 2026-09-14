@@ -200,7 +200,7 @@ Flat by default. Depth exists only as a response to interaction: project cards l
 - **Internal Padding:** 2rem; internal stack gap 1rem, date kicker top, tags pushed to bottom with `margin-top: auto`.
 
 ### Navigation
-- Sticky translucent blurred header, 64px, hairline bottom border. Brand monogram "FB." left (serif, violet dot), links right in Inter 0.875rem/500 ink-soft. Hover/active draws a 1.5px violet underline that scales in from the left; active section tracked by scroll-spy (`aria-current="page"`). Below 540px the links wrap to a second, horizontally scrollable row.
+- Sticky translucent blurred header, 64px, hairline bottom border. Brand monogram "FB." left (serif, violet dot), links right in Inter 0.875rem/500 ink-soft. Hover/active draws a 1.5px violet underline that scales in from the left; active section tracked by scroll-spy (`aria-current="page"`). Below 540px the links wrap to a second, horizontally scrollable row. A language switch (EN / DE) sits left of the theme toggle: two flag buttons in a hairline pill, the active one carrying the violet wash. Flags are always paired with a text code, since a flag names a country rather than a language; below 400px the code drops and the `aria-label` carries it.
 
 ### Timeline (signature component)
 - Experience and Education entries hang off a 1px hairline spine with 10px violet-ringed markers (most recent entry filled solid). Each entry: uppercase violet date + muted place/badge line, serif title, muted org, em-dash-bulleted description list. Badges (GPA) are violet-wash pills.
