@@ -81,8 +81,10 @@
 
       <!--
         Language switch — English is the default; the choice persists in
-        localStorage and is applied by i18n.js. Flags are paired with an
-        EN / DE label on purpose: a flag names a country, not a language.
+        localStorage and is applied by i18n.js. Flag-only by necessity: the
+        EN / DE labels cost 41px the header does not have once the German
+        nav runs at full length. Each button's aria-label names the
+        language, so screen readers never see a bare flag.
       -->
       <div class="lang-switch" role="group" data-i18n-aria-label="a11y.langGroup" aria-label="Language">
         <button type="button" class="lang-option" data-lang-option="en" aria-pressed="true"
@@ -95,7 +97,6 @@
             <path d="M30,0 v30 M0,15 h60" stroke="#ffffff" stroke-width="10"/>
             <path d="M30,0 v30 M0,15 h60" stroke="#c8102e" stroke-width="6"/>
           </svg>
-          <span class="lang-code">EN</span>
         </button>
         <button type="button" class="lang-option" data-lang-option="de" aria-pressed="false"
                 data-i18n-aria-label="a11y.langDe" aria-label="Switch to German">
@@ -104,7 +105,6 @@
             <rect width="5" height="2" y="1" fill="#dd0000"/>
             <rect width="5" height="1" y="2" fill="#ffce00"/>
           </svg>
-          <span class="lang-code">DE</span>
         </button>
       </div>
 

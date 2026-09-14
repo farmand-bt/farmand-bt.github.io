@@ -102,8 +102,10 @@ let sharedStore;
 
   check('html lang', w.document.documentElement.lang, 'de');
   check('nav About', $(w, 'a[href="#about"]').textContent, 'Über mich');
-  check('nav Experience (short)', $(w, 'a[href="#experience"]').textContent, 'Erfahrung');
-  check('Experience heading (full)', $(w, '#experience-heading').textContent, 'Berufserfahrung');
+  check('nav Experience', $(w, 'a[href="#experience"]').textContent, 'Berufserfahrung');
+  check('Experience heading', $(w, '#experience-heading').textContent, 'Berufserfahrung');
+  /* The switch is flag-only; nothing should re-introduce a text label. */
+  check('no text label on switch', w.document.querySelectorAll('.lang-code').length, 0);
   check('section heading', $(w, '#about-heading').textContent, 'Über mich');
   check('GPA badge localised', $(w, '#education .timeline-badge').textContent, 'Note 1,3');
   check('thesis label', $(w, '[data-i18n="edu.msc.thesisLabel"]').textContent, 'Masterarbeit (Exposé):');

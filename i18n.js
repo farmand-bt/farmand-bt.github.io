@@ -57,9 +57,7 @@
 
     /* --- Navigation --- */
     'nav.about'      : 'Über mich',
-    /* Deliberately shorter than the section heading below: the full
-       word overflows the 820px header. */
-    'nav.experience' : 'Erfahrung',
+    'nav.experience' : 'Berufserfahrung',
     'nav.education'  : 'Ausbildung',
     'nav.projects'   : 'Projekte',
     'nav.skills'     : 'Kenntnisse',

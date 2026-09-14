@@ -6,6 +6,7 @@
      2. Scroll-spy      (highlights the active nav link)
      3. External links  (screen-reader new-tab hint)
      4. Reveal          (fade-in animation on scroll)
+     5. Header height   (keeps --header-h equal to the real header)
 
    Blocks 1 and 3 own text of their own, so they read it through
    window.I18N (see i18n.js) and re-label on 'languagechanged'.
@@ -155,4 +156,53 @@
   document.querySelectorAll('.reveal').forEach(function (el) {
     observer.observe(el);
   });
+}());
+
+
+/* ============================================================
+   5. Header height — keep --header-h equal to the real header
+
+   The header wraps to two rows under 820px and three on the
+   narrowest phones, and German labels wrap earlier than English
+   ones. A hand-tuned value in CSS therefore always drifts: anchor
+   jumps land under the sticky bar and the hero's min-height is off.
+   Measuring the element keeps it exact for any language or width.
+   CSS still carries per-breakpoint fallbacks for the no-JS case.
+   ============================================================ */
+(function () {
+  var header = document.querySelector('.site-header');
+  if (!header) return;
+
+  var root = document.documentElement;
+  var last = 0;
+
+  function sync() {
+    var h = Math.round(header.getBoundingClientRect().height);
+    /* The guard also stops a measure/apply feedback loop. */
+    if (h && h !== last) {
+      last = h;
+      root.style.setProperty('--header-h', h + 'px');
+    }
+  }
+
+  sync();
+
+  /*
+   * Several independent things change the header's height, so listen for
+   * all of them rather than trusting one signal:
+   *   - viewport resize      → links wrap onto more or fewer rows
+   *   - language swap        → German labels are longer than English
+   *   - webfont arrival      → Inter replaces the fallback, widths shift
+   *   - anything else        → ResizeObserver, where supported
+   */
+  window.addEventListener('resize', sync);
+  document.addEventListener('languagechanged', sync);
+
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(sync).catch(function () {});
+  }
+
+  if (window.ResizeObserver) {
+    new ResizeObserver(sync).observe(header);
+  }
 }());
