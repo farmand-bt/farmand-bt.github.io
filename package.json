@@ -4,6 +4,9 @@
   "private": true,
   "description": "Tooling for farmand-bt.github.io. The site itself is plain HTML/CSS/JS with no build step and no runtime dependencies — this file exists only so the test suite can run.",
   "type": "module",
+  "engines": {
+    "node": ">=22.22.2"
+  },
   "scripts": {
     "test": "node test/i18n.test.mjs"
   },

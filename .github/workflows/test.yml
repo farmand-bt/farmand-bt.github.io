@@ -13,9 +13,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # jsdom 30 requires ^22.22.2 || ^24.15.0 || >=26, and undici 8
+      # requires >=22.19.0. Node 20 installs fine but crashes at runtime.
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
 
       - name: Install dev dependencies
         run: npm ci
