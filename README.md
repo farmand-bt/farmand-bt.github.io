@@ -36,3 +36,18 @@ All content lives in `index.html`. Each section is commented with what to edit.
   theme accent (so they adapt to light/dark); tools without an icon there are text-only
   chips.
 - **CV**: replace `assets/CV.pdf` — note the filename is case-sensitive on GitHub Pages.
+
+## Development
+
+The site is plain HTML/CSS/JS with no build step — open `index.html` or serve
+the folder with `python -m http.server`.
+
+`package.json` exists only for the test suite, which covers the English/German
+language switch:
+
+```
+npm install
+npm test
+```
+
+Outstanding work is tracked in [TODO.md](TODO.md).

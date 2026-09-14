@@ -1,0 +1,26 @@
+# Runs the language-switch test suite on every push and pull request.
+# The site is static and needs no build — this only guards the JS behaviour.
+name: Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # jsdom 30 requires ^22.22.2 || ^24.15.0 || >=26, and undici 8
+      # requires >=22.19.0. Node 20 installs fine but crashes at runtime.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Install dev dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test

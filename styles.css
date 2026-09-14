@@ -221,7 +221,10 @@ main:focus { outline: none; }
   position: sticky;
   top: 0;
   z-index: 100;
-  height: var(--header-h);
+  /* Literal, not var(--header-h): that variable is the *measured* header
+     offset consumed by scroll-padding and the hero, and script.js writes
+     it from this element. Feeding it back here would be circular. */
+  height: 64px;
   /* Translucent paper + blur for an airy editorial feel */
   background-color: color-mix(in srgb, var(--bg) 82%, transparent);
   -webkit-backdrop-filter: blur(10px);
@@ -287,9 +290,75 @@ main:focus { outline: none; }
 }
 .nav-links a:hover { color: var(--ink); text-decoration: none; }
 
+/* German runs longer than English (Berufserfahrung, Ausbildung...), enough
+   to overflow the 820px header. Tightening the link padding only when
+   [lang="de"] is set buys back ~48px and leaves the English nav untouched. */
+html[lang="de"] .nav-links { gap: 2px; }
+html[lang="de"] .nav-links a { padding-inline: var(--sp-2); }
+html[lang="de"] .nav-links a::after { left: var(--sp-2); right: var(--sp-2); }
+
 /* Active section — set by scroll-spy in script.js */
 .nav-links a[aria-current="page"] { color: var(--ink); }
 .nav-links a[aria-current="page"]::after { transform: scaleX(1); }
+
+/* Language switch — two flag buttons in a hairline pill, sized to sit
+   level with the 44px theme toggle beside it. Flag-only: the EN / DE
+   labels did not fit once the German nav ran at full length, so the
+   pressed state does the work instead — accent wash plus a fully opaque
+   flag against 45% for the inactive one. aria-label carries the name. */
+.lang-switch {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  transition: border-color var(--dur-fast) var(--ease);
+}
+
+.lang-option {
+  display: flex;
+  align-items: center;
+  padding: 6px 8px;
+  border-radius: 999px;
+  color: var(--ink-soft);
+  transition: background-color var(--dur-fast) var(--ease),
+              color var(--dur-fast) var(--ease);
+}
+
+/* Flags fill a fixed box so both buttons stay the same width; 'slice'
+   crops the differing aspect ratios instead of distorting them. A 1px
+   inset ring keeps the white of the Union Jack off a light background. */
+.lang-flag {
+  width: 18px;
+  height: 12px;
+  border-radius: 2px;
+  flex-shrink: 0;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.12);
+  opacity: 0.45;
+  transition: opacity var(--dur-fast) var(--ease);
+}
+
+.lang-code {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  line-height: 1;
+}
+
+/* Active language */
+.lang-option[aria-pressed="true"] {
+  background-color: var(--accent-soft);
+  color: var(--chip-ink);
+}
+.lang-option[aria-pressed="true"] .lang-flag { opacity: 1; }
+
+/* Coarse pointers get a comfortable hit area — at phone widths the switch
+   has its own row, so the extra padding costs the nav nothing. */
+@media (pointer: coarse) {
+  .lang-option { padding: 10px; }
+}
 
 /* Theme toggle button — 44px hit area; the two icons overlap and
    cross-fade with a small turn when [data-theme] flips */
@@ -1032,6 +1101,10 @@ main:focus { outline: none; }
   .cert-link:hover { transform: translateX(var(--sp-2)); }
   .cert-link:hover .cert-arrow { transform: translate(2px, -2px); }
 
+  .lang-switch:hover { border-color: var(--ink-soft); }
+  .lang-option:hover { color: var(--ink); }
+  .lang-option:hover .lang-flag { opacity: 1; }
+
   .contact-link:hover { transform: translateX(var(--sp-2)); }
   .contact-email:hover .contact-arrow { transform: translateX(6px); }
 }
@@ -1039,6 +1112,7 @@ main:focus { outline: none; }
 /* Press feedback — deliberately outside the pointer gate (presses are
    intentional on touch) and after it, so pressing beats the hover lift */
 .btn:active { transform: scale(0.97); }
+.lang-option:active { transform: scale(0.96); }
 
 
 /* ============================================================
@@ -1101,6 +1175,46 @@ html.js .certs.reveal.is-visible .cert-list li:nth-child(6) { transition-delay: 
 
 
 /* ============================================================
+   17. Responsive — ≤820px (nav no longer fits on one row)
+
+   The header row is brand + six links + language switch + theme
+   toggle. Measured, that needs ~799px of container width in German
+   and ~747px in English; below the 820px container it overflows and
+   pushes the whole page sideways. So the links drop to their own
+   row here rather than at the phone breakpoint.
+   ============================================================ */
+@media (max-width: 820px) {
+  /* Single wrapped row of links under the brand row */
+  /* Fallback for the no-JS case; script.js measures the real value. */
+  :root { --header-h: 112px; }
+
+  .site-header { height: auto; min-height: 64px; }
+
+  .nav {
+    flex-wrap: wrap;
+    align-items: center;
+    padding-block: var(--sp-2);
+    gap: var(--sp-2);
+    height: auto;
+  }
+
+  /* Keep the language switch + theme toggle pinned right on the top row */
+  .lang-switch { margin-left: auto; }
+  #theme-toggle { margin-left: 0; }
+
+  /* Links take full width and wrap — every destination stays visible */
+  .nav-links {
+    order: 3;
+    flex: 0 0 100%;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    padding-bottom: var(--sp-1);
+  }
+  .nav-links a { padding-block: var(--sp-2); }
+}
+
+
+/* ============================================================
    17. Responsive — ≤900px (tablet)
    ============================================================ */
 @media (max-width: 900px) {
@@ -1117,33 +1231,10 @@ html.js .certs.reveal.is-visible .cert-list li:nth-child(6) { transition-delay: 
    18. Responsive — ≤540px (mobile)
    ============================================================ */
 @media (max-width: 540px) {
-  /* Taller effective header because nav links wrap below the brand row */
+  /* At this width the links themselves wrap onto two rows, so the
+     header grows again beyond the single-row value set at 820px. */
+  /* Fallback for the no-JS case; script.js measures the real value. */
   :root { --header-h: 156px; }
-  html  { scroll-padding-top: 156px; }
-
-  .site-header { height: auto; min-height: 64px; }
-
-  /* Allow nav to wrap: brand + toggle on top row, links below */
-  .nav {
-    flex-wrap: wrap;
-    align-items: center;
-    padding-block: var(--sp-2);
-    gap: var(--sp-2);
-    height: auto;
-  }
-
-  /* Keep the toggle pinned to the right of the top row */
-  #theme-toggle { margin-left: auto; }
-
-  /* Links take full width and wrap — every destination stays visible */
-  .nav-links {
-    order: 3;
-    flex: 0 0 100%;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    padding-bottom: var(--sp-1);
-  }
-  .nav-links a { padding-block: var(--sp-2); }
 
   /* One-line email link at phone widths */
   .contact-email { font-size: 1.125rem; }
